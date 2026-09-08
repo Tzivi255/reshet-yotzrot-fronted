@@ -1,12 +1,13 @@
+import { useLocation, useNavigate } from 'react-router-dom'
 import { colors, fonts, layout } from '../theme'
 
 // סרגל ניווט עליון - מתוך ה-<header> שב-design-template.html.
-// ה-Routing עדיין לא מחובר (שלב 2), אז הניווט מתקבל כ-props עם ברירת מחדל.
+// מחובר ל-React Router: הלשונית הפעילה נגזרת מה-URL הנוכחי.
 
 const NAV_ITEMS = [
-  { key: 'home', label: 'הבית' },
-  { key: 'gallery', label: 'גלריה' },
-  { key: 'admin', label: 'ניהול' },
+  { key: 'home', label: 'הבית', path: '/' },
+  { key: 'gallery', label: 'גלריה', path: '/gallery' },
+  { key: 'admin', label: 'ניהול', path: '/admin' },
 ]
 
 const navBase = {
@@ -30,10 +31,17 @@ const navOn = {
   color: colors.rose,
 }
 
-export default function Navbar({ active = 'home', onNavigate = () => {} }) {
+export default function Navbar() {
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
   // בגלריה ובפרופיל מסמנים את לשונית "גלריה" כפעילה, כמו בתבנית.
-  const isActive = (key) =>
-    key === active || (key === 'gallery' && active === 'profile')
+  const isActive = (key) => {
+    if (key === 'home') return pathname === '/'
+    if (key === 'gallery') return pathname.startsWith('/gallery') || pathname.startsWith('/photographer')
+    if (key === 'admin') return pathname.startsWith('/admin')
+    return false
+  }
 
   return (
     <header
@@ -58,7 +66,7 @@ export default function Navbar({ active = 'home', onNavigate = () => {} }) {
         }}
       >
         <button
-          onClick={() => onNavigate('home')}
+          onClick={() => navigate('/')}
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -113,7 +121,7 @@ export default function Navbar({ active = 'home', onNavigate = () => {} }) {
           {NAV_ITEMS.map((item) => (
             <button
               key={item.key}
-              onClick={() => onNavigate(item.key)}
+              onClick={() => navigate(item.path)}
               style={isActive(item.key) ? navOn : navBase}
             >
               {item.label}

@@ -123,6 +123,29 @@ export const steps = [
   { n: '3', text: 'קיבלת קליפ מדהים כמו שתמיד חלמת' },
 ]
 
+// טווחי המחירים לסינון בגלריה - נלקח מ-BANDS שבתבנית.
+export const priceBands = [
+  { key: 'all', label: 'הכל', min: 0, max: Infinity },
+  { key: 'a', label: 'עד 1,000 ₪', min: 0, max: 1000 },
+  { key: 'b', label: '1,000–2,500 ₪', min: 1000, max: 2500 },
+  { key: 'c', label: '2,500–4,000 ₪', min: 2500, max: 4000 },
+  { key: 'd', label: '4,000 ₪ ומעלה', min: 4000, max: Infinity },
+]
+
+// טיוטה ריקה לטופס הוספת יוצרת - נלקח מ-EMPTY שבתבנית.
+export const EMPTY_PHOTOGRAPHER = {
+  name: '',
+  shootingCategory: '',
+  style: '',
+  location: '',
+  price: '',
+  phone: '',
+  email: '',
+  portfolio: '',
+  bio: '',
+  hasWhatsApp: true,
+}
+
 // פרטי הקשר של מיכל.
 export const michal = {
   phone: '052-716-6507',
@@ -133,4 +156,27 @@ export const michal = {
 // עזר לפורמט מחיר בשקלים, כמו fmt() בתבנית.
 export function formatPrice(n) {
   return Number(n || 0).toLocaleString('he-IL') + ' ₪'
+}
+
+// חישוב שדות נגזרים ליוצרת - מקביל ל-decorate() שבתבנית.
+export function decoratePhotographer(p) {
+  const digits = String(p.phone || '').replace(/\D/g, '')
+  const intl = digits.replace(/^0/, '972')
+  return {
+    ...p,
+    initial: (p.name || '?').trim().charAt(0),
+    priceLabel: formatPrice(p.price),
+    adminMeta: `${p.shootingCategory} · ${p.location} · ${formatPrice(p.price)}`,
+    telLink: `tel:${digits}`,
+    waLink:
+      `https://wa.me/${intl}?text=` +
+      encodeURIComponent(`היי ${p.name}, הגעתי דרך רשת היוצרות ואשמח לשמוע פרטים על צילומים.`),
+    mailLink:
+      `mailto:${p.email}?subject=` +
+      encodeURIComponent('פנייה דרך רשת היוצרות') +
+      '&body=' +
+      encodeURIComponent(
+        `היי ${p.name},\n\nהגעתי אליך דרך רשת היוצרות של מיכל.\nאשמח לשמוע על זמינות ומחיר ל${p.shootingCategory}.\n\nתודה!`,
+      ),
+  }
 }
