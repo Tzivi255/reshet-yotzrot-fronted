@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #FDF6F4; }
+  * { box-sizing: border-box; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #C7395C; text-decoration: none; }
+  a:hover { color: #94243F; }
+  button { font-family: inherit; cursor: pointer; }
+  input, select, textarea { font-family: inherit; }
+  @keyframes recBlink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: .15 } }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+</style>
+</helmet>
+<div dir="rtl" style="font-family: Assistant, system-ui, sans-serif; color: #2C1E23; background: #FDF6F4; min-height: 100vh; overflow-x: clip">
+
+  <header style="position: sticky; top: 0; z-index: 40; background: rgba(253,246,244,.92); backdrop-filter: blur(10px); borderBottom: 1px solid #F3DAE0">
+    <div style="max-width: 1120px; margin: 0 auto; padding: 11px 14px; min-height: 69px; display: flex; align-items: center; gap: 10px">
+      <button onClick="{{ goHome }}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 1px; background: none; border: 0; padding: 0; text-align: right; min-width: 0; flex-shrink: 1; overflow: hidden">
+        <span style="font-family: 'Secular One', sans-serif; font-size: 19px; color: #2C1E23; line-height: 1.1">רשת היוצרות</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .18em; color: #C7395C; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%">MICHAL WEG STUDIO</span>
+      </button>
+      <nav style="margin-inline-start: auto; display: flex; flex-wrap: nowrap; justify-content: flex-end; gap: 2px; align-items: center; flex-shrink: 0">
+        <button onClick="{{ goHome }}" style="{{ navHomeStyle }}">הבית</button>
+        <button onClick="{{ goGallery }}" style="{{ navGalleryStyle }}">גלריה</button>
+        <button onClick="{{ goAdmin }}" style="{{ navAdminStyle }}">ניהול</button>
+      </nav>
+    </div>
+  </header>
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <section style="position: relative; min-height: 78vh; display: flex; align-items: flex-end; padding: 28px 18px 40px; background-image: linear-gradient(to top, rgba(253,246,244,1) 4%, rgba(253,246,244,.55) 34%, rgba(253,246,244,0) 72%), url('assets/hero-clouds.png'); background-size: cover; background-position: 50% 22%">
+      <div style="max-width: 1120px; margin: 0 auto; width: 100%; animation: riseIn .7s ease both">
+        <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: #2F4653; border: 1px solid #2F4653; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .1em; color: #F0A945; margin-bottom: 18px">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: #E0325A; animation: recBlink 1.6s infinite"></span>REC · 4K · 25FPS
+        </div>
+        <p style="margin: 0 0 10px; font-size: 16px; color: #7A5560; letter-spacing: .02em">תמיד חלמת על קליפ מהסרטים?</p>
+        <h1 style="margin: 0 0 18px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: clamp(38px, 11vw, 76px); line-height: 1.02; letter-spacing: -.01em; color: #2C1E23; text-wrap: balance">גם לך מגיע<br /><span style="color: #C7395C">הפקה מושלמת</span></h1>
+        <p style="margin: 0 0 28px; max-width: 30em; font-size: clamp(16px, 4.4vw, 20px); line-height: 1.6; color: #5A3E47; text-wrap: pretty">הקמנו עבורך רשת של יוצרות מובחרות, בוגרות הקורסים המקצועיים של מיכל, שיגשימו לך חלומות מהסרטים.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px">
+          <button onClick="{{ goGallery }}" style="min-height: 54px; padding: 0 30px; border: 0; border-radius: 999px; background: #C7395C; color: #fff; font-size: 18px; font-weight: 700; box-shadow: 0 12px 28px rgba(199,57,92,.28)" style-hover="background: #94243F; transform: translateY(-1px)">לגלריית היוצרות</button>
+          <a href="tel:0527166507" style="min-height: 54px; padding: 0 26px; display: inline-flex; align-items: center; border-radius: 999px; background: #2F4653; border: 1px solid #2F4653; color: #fff; font-size: 17px; font-weight: 600" style-hover="background: #1F323C">לפרטים והתאמת יוצרת</a>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 8px 18px 56px">
+      <div style="max-width: 1120px; margin: 0 auto; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr))">
+        <sc-for list="{{ values }}" as="v" hint-placeholder-count="4">
+          <div style="background: #fff; border: 1px solid #F6E3E7; border-radius: 22px; padding: 22px; box-shadow: 0 8px 24px rgba(90,62,71,.05)">
+            <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .16em; color: #9E5E10; margin-bottom: 12px">{{ v.tag }}</div>
+            <h3 style="margin: 0 0 6px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: 20px; line-height: 1.25">{{ v.title }}</h3>
+            <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: #7A5560">{{ v.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="padding: 0 18px 64px">
+      <div style="max-width: 1120px; margin: 0 auto; background: linear-gradient(160deg, #FCEAEE, #FBDCE3); border-radius: 30px; padding: clamp(26px, 6vw, 52px)">
+        <h2 style="margin: 0 0 26px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: clamp(26px, 7vw, 38px); line-height: 1.15">איך זה עובד</h2>
+        <div style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr))">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+            <div style="display: flex; gap: 14px; align-items: flex-start; background: rgba(255,255,255,.7); border-radius: 20px; padding: 20px">
+              <div style="flex: 0 0 auto; width: 38px; height: 38px; border-radius: 50%; background: #2F4653; color: #F0A945; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 15px">{{ s.n }}</div>
+              <p style="margin: 0; font-size: 17px; line-height: 1.5; color: #3B272E; font-weight: 600">{{ s.text }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 0 18px 72px">
+      <div style="max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between; border-top: 1px solid #F3DAE0; padding-top: 34px">
+        <div>
+          <p style="margin: 0 0 6px; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .16em; color: #9E5E10">MICHAL · PRODUCER</p>
+          <h2 style="margin: 0 0 8px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: clamp(24px, 6vw, 34px)">מיכל · מפיקה ומנהלת רשת היוצרות</h2>
+          <p style="margin: 0; font-size: 16px; color: #7A5560">אחרי שנים של הפקת קליפים ברמה הגבוהה ביותר והכשרת עשרות יוצרות מוכשרות, הגיע הזמן להרחיב את המעגל.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; min-width: 240px">
+          <a href="tel:0527166507" style="min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 16px; background: #2F4653; color: #fff; font-size: 17px; font-weight: 600">052-716-6507</a>
+          <a href="mailto:michal66507@gmail.com" style="min-height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 16px; background: #fff; border: 1px solid #F0C4CF; color: #2C1E23; font-size: 16px">michal66507@gmail.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isGallery }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width: 1120px; margin: 0 auto; padding: 26px 18px 72px">
+    <h1 style="margin: 0 0 6px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: clamp(30px, 8vw, 48px)">גלריית היוצרות</h1>
+    <p style="margin: 0 0 22px; font-size: 16.5px; color: #7A5560">יוצרות מכל רחבי הארץ, ממחירים נגישים ועד רמות פרימיום.</p>
+
+    <div style="position: sticky; top: 70px; z-index: 30; background: #fff; border: 1px solid #F3DAE0; border-radius: 22px; padding: 14px; box-shadow: 0 10px 26px rgba(90,62,71,.07); margin-bottom: 22px">
+      <div style="display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))">
+        <label style="display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; font-weight: 700; color: #7A5560">אזור / יישוב</span>
+          <select value="{{ area }}" onChange="{{ setArea }}" style="min-height: 48px; border-radius: 14px; border: 1px solid #F0C4CF; background: #FDF6F4; padding: 0 12px; font-size: 16px; color: #2C1E23">
+            <sc-for list="{{ areas }}" as="a" hint-placeholder-count="4">
+              <option value="{{ a }}">{{ a }}</option>
+            </sc-for>
+          </select>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; font-weight: 700; color: #7A5560">מה מצלמים</span>
+          <select value="{{ cat }}" onChange="{{ setCat }}" style="min-height: 48px; border-radius: 14px; border: 1px solid #F0C4CF; background: #FDF6F4; padding: 0 12px; font-size: 16px; color: #2C1E23">
+            <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+              <option value="{{ c }}">{{ c }}</option>
+            </sc-for>
+          </select>
+        </label>
+      </div>
+      <div style="margin-top: 12px">
+        <span style="display: block; font-size: 13px; font-weight: 700; color: #7A5560; margin-bottom: 8px">טווח מחירים</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{ priceBands }}" as="p" hint-placeholder-count="5">
+            <button onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin: 0 0 14px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: .12em; color: #3F5D6D">{{ resultLine }}</p>
+
+    <div style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr))">
+      <sc-for list="{{ list }}" as="p" hint-placeholder-count="6">
+        <article style="background: #fff; border: 1px solid #F6E3E7; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 26px rgba(90,62,71,.06); display: flex; flex-direction: column">
+          <div style="height: 132px; background: linear-gradient(135deg, #FBDCE3, #F8C9D5); display: flex; align-items: center; justify-content: center; position: relative">
+            <div style="width: 74px; height: 74px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Secular One', sans-serif; font-size: 26px; color: #C7395C; box-shadow: 0 6px 16px rgba(148,36,63,.16)">{{ p.initial }}</div>
+            <span style="position: absolute; top: 12px; inset-inline-start: 12px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .14em; color: #F0A945; background: #2F4653; padding: 4px 8px; border-radius: 999px">LOGO</span>
+          </div>
+          <div style="padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1">
+            <h3 style="margin: 0; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: 21px">{{ p.name }}</h3>
+            <p style="margin: 0; font-size: 15.5px; color: #C7395C; font-weight: 600">{{ p.shootingCategory }}</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px">
+              <span style="font-size: 13.5px; color: #3F5D6D; background: #EDF3F6; border-radius: 999px; padding: 5px 11px; font-weight: 600">{{ p.location }}</span>
+              <span style="font-size: 13.5px; color: #8A5410; background: #FDF0DC; border-radius: 999px; padding: 5px 11px; font-weight: 700">{{ p.priceLabel }}</span>
+            </div>
+            <button onClick="{{ p.open }}" style="margin-top: auto; min-height: 48px; border: 0; border-radius: 14px; background: #2F4653; color: #fff; font-size: 16px; font-weight: 600; width: 100%" style-hover="background: #C7395C">לפרופיל המלא</button>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align: center; padding: 48px 16px; color: #7A5560">
+        <p style="margin: 0 0 14px; font-size: 17px">לא נמצאו יוצרות בסינון הזה.</p>
+        <button onClick="{{ clearFilters }}" style="min-height: 46px; padding: 0 20px; border-radius: 999px; border: 1px solid #F0C4CF; background: #fff; font-size: 16px">איפוס סינון</button>
+      </div>
+    </sc-if>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width: 900px; margin: 0 auto; padding: 20px 18px 96px">
+    <button onClick="{{ goGallery }}" style="background: none; border: 0; padding: 8px 0; font-size: 15.5px; color: #7A5560; margin-bottom: 10px">← חזרה לגלריה</button>
+    <div style="background: #fff; border: 1px solid #F6E3E7; border-radius: 28px; overflow: hidden; box-shadow: 0 14px 34px rgba(90,62,71,.07)">
+      <div style="background: linear-gradient(150deg, #FCEAEE, #F8C9D5); padding: 30px 22px; display: flex; flex-wrap: wrap; gap: 18px; align-items: center">
+        <div style="width: 92px; height: 92px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Secular One', sans-serif; font-size: 34px; color: #C7395C; box-shadow: 0 8px 20px rgba(148,36,63,.16)">{{ current.initial }}</div>
+        <div>
+          <h1 style="margin: 0 0 6px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: clamp(28px, 7vw, 40px); line-height: 1.1">{{ current.name }}</h1>
+          <p style="margin: 0; font-size: 17px; color: #94243F; font-weight: 600">{{ current.shootingCategory }}</p>
+        </div>
+      </div>
+      <div style="padding: 24px 22px 28px; display: flex; flex-direction: column; gap: 22px">
+        <div style="display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))">
+          <div style="background: #FDF1F3; border-radius: 18px; padding: 16px">
+            <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: .16em; color: #3F5D6D; margin-bottom: 6px">LOCATION</div>
+            <div style="font-size: 17px; font-weight: 600">{{ current.location }}</div>
+          </div>
+          <div style="background: #FDF0DC; border-radius: 18px; padding: 16px">
+            <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: .16em; color: #8A5410; margin-bottom: 6px">PRICE</div>
+            <div style="font-size: 17px; font-weight: 600">{{ current.priceLabel }}</div>
+          </div>
+          <div style="background: #EDF3F6; border-radius: 18px; padding: 16px">
+            <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: .16em; color: #3F5D6D; margin-bottom: 6px">STYLE</div>
+            <div style="font-size: 17px; font-weight: 600">{{ current.style }}</div>
+          </div>
+        </div>
+        <div>
+          <h2 style="margin: 0 0 8px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: 23px">כמה מילים עלי</h2>
+          <p style="margin: 0; font-size: 17px; line-height: 1.7; color: #5A3E47; text-wrap: pretty">{{ current.bio }}</p>
+        </div>
+        <div>
+          <h2 style="margin: 0 0 10px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: 23px">תיק עבודות</h2>
+          <a href="{{ current.portfolio }}" target="_blank" style="display: block; border-radius: 20px; overflow: hidden; border: 1px solid #F0C4CF">
+            <div style="height: 150px; background-image: repeating-linear-gradient(135deg, #EDF3F6 0 12px, #E0EAEF 12px 24px); display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: .12em; color: #3F5D6D">PORTFOLIO COVER</div>
+            <div style="padding: 14px 16px; background: #fff; font-size: 16px; font-weight: 600; color: #C7395C">לצפייה בתיק העבודות המלא ↗</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div style="position: sticky; bottom: 0; margin-top: 20px; background: rgba(253,246,244,.94); backdrop-filter: blur(8px); padding: 12px 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))">
+      <sc-if value="{{ current.hasWhatsApp }}" hint-placeholder-val="{{ true }}">
+        <a href="{{ current.waLink }}" target="_blank" style="min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 18px; background: #22B15C; color: #fff; font-size: 17.5px; font-weight: 700; box-shadow: 0 10px 24px rgba(34,177,92,.28)">וואטסאפ</a>
+      </sc-if>
+      <a href="{{ current.telLink }}" style="min-height: 56px; display: flex; align-items: center; justify-content: center; border-radius: 18px; background: #2F4653; color: #fff; font-size: 17.5px; font-weight: 700">חיוג</a>
+      <a href="{{ current.mailLink }}" style="min-height: 56px; display: flex; align-items: center; justify-content: center; border-radius: 18px; background: #fff; border: 2px solid #2F4653; color: #2F4653; font-size: 17.5px; font-weight: 700">מייל</a>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width: 1120px; margin: 0 auto; padding: 26px 18px 80px">
+    <sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width: 380px; margin: 8vh auto; background: #fff; border: 1px solid #F6E3E7; border-radius: 26px; padding: 30px; box-shadow: 0 14px 34px rgba(90,62,71,.08)">
+        <h1 style="margin: 0 0 6px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: 26px">ממשק ניהול</h1>
+        <p style="margin: 0 0 18px; font-size: 15.5px; color: #7A5560">אזור מוגן למנהלת המיזם.</p>
+        <input type="password" value="{{ pass }}" onChange="{{ setPass }}" placeholder="סיסמה" style="width: 100%; min-height: 50px; border-radius: 14px; border: 1px solid #F0C4CF; background: #FDF6F4; padding: 0 14px; font-size: 16px; margin-bottom: 10px" />
+        <button onClick="{{ unlock }}" style="width: 100%; min-height: 52px; border: 0; border-radius: 14px; background: #C7395C; color: #fff; font-size: 17px; font-weight: 700">כניסה</button>
+        <p style="margin: 12px 0 0; font-family: 'Space Mono', monospace; font-size: 11px; color: #B08C96">DEMO: כל סיסמה תעבוד</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ unlocked }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; justify-content: space-between; margin-bottom: 20px">
+        <div>
+          <h1 style="margin: 0 0 4px; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: clamp(26px, 7vw, 38px)">ניהול יוצרות</h1>
+          <p style="margin: 0; font-size: 15.5px; color: #7A5560">{{ adminCount }}</p>
+        </div>
+        <button onClick="{{ openAdd }}" style="min-height: 50px; padding: 0 22px; border: 0; border-radius: 16px; background: #C7395C; color: #fff; font-size: 16.5px; font-weight: 700">+ הוספת יוצרת</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{ all }}" as="p" hint-placeholder-count="6">
+          <div style="background: #fff; border: 1px solid #F6E3E7; border-radius: 20px; padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #FDF1F3; color: #C7395C; display: flex; align-items: center; justify-content: center; font-family: 'Secular One', sans-serif; font-size: 17px">{{ p.initial }}</div>
+            <div style="flex: 1 1 160px; min-width: 0">
+              <div style="font-size: 17px; font-weight: 700">{{ p.name }}</div>
+              <div style="font-size: 14.5px; color: #7A5560">{{ p.adminMeta }}</div>
+            </div>
+            <div style="display: flex; gap: 8px; margin-inline-start: auto">
+              <button onClick="{{ p.edit }}" style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #2F4653; background: #2F4653; color: #fff; font-size: 15px; font-weight: 600">עריכה</button>
+              <button onClick="{{ p.remove }}" style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #F6C9D4; background: #FDF1F3; color: #94243F; font-size: 15px; font-weight: 600">מחיקה</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeModal }}" style="position: fixed; inset: 0; z-index: 60; background: rgba(44,30,35,.45); display: flex; align-items: flex-end; justify-content: center; padding: 0">
+    <div onClick="{{ stop }}" style="background: #fff; width: 100%; max-width: 560px; max-height: 92vh; overflow-y: auto; border-radius: 28px 28px 0 0; padding: 22px 20px 26px; animation: riseIn .28s ease both">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px">
+        <h2 style="margin: 0; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: 23px">{{ modalTitle }}</h2>
+        <button onClick="{{ closeModal }}" style="width: 40px; height: 40px; border-radius: 50%; border: 1px solid #F0C4CF; background: #fff; font-size: 18px; color: #7A5560">✕</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <sc-for list="{{ fields }}" as="f" hint-placeholder-count="7">
+          <label style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 13.5px; font-weight: 700; color: #7A5560">{{ f.label }}</span>
+            <input type="text" value="{{ f.value }}" onChange="{{ f.onChange }}" placeholder="{{ f.placeholder }}" style="min-height: 50px; border-radius: 14px; border: 1px solid #F0C4CF; background: #FDF6F4; padding: 0 14px; font-size: 16px" />
+          </label>
+        </sc-for>
+        <label style="display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13.5px; font-weight: 700; color: #7A5560">כמה מילים עלי</span>
+          <textarea value="{{ bioValue }}" onChange="{{ setBio }}" rows="4" style="border-radius: 14px; border: 1px solid #F0C4CF; background: #FDF6F4; padding: 12px 14px; font-size: 16px; resize: vertical"></textarea>
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; background: #FDF1F3; border-radius: 14px; padding: 14px; min-height: 52px">
+          <input type="checkbox" checked="{{ waValue }}" onChange="{{ setWa }}" style="width: 20px; height: 20px; accent-color: #22B15C" />
+          <span style="font-size: 16px; font-weight: 600">יש וואטסאפ</span>
+        </label>
+        <div style="display: flex; gap: 10px; margin-top: 4px">
+          <button onClick="{{ save }}" style="flex: 1; min-height: 54px; border: 0; border-radius: 16px; background: #C7395C; color: #fff; font-size: 17px; font-weight: 700">שמירה</button>
+          <button onClick="{{ closeModal }}" style="min-height: 54px; padding: 0 20px; border-radius: 16px; border: 1px solid #F0C4CF; background: #fff; font-size: 16px">ביטול</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <footer style="background: #2F4653; color: #E8EEF1; padding: 30px 18px 40px">
+    <div style="max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+      <div style="display: flex; flex-direction: column; gap: 3px">
+        <span style="font-family: 'Secular One', sans-serif; font-size: 18px; color: #fff">רשת היוצרות</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .18em; color: #F0A945">MICHAL WEG STUDIO</span>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 14.5px; color: #C7D6DE">
+        <a href="tel:0527166507" style="color: #fff; font-weight: 600">052-716-6507</a>
+        <span style="color: #6C8896">·</span>
+        <a href="mailto:michal66507@gmail.com" style="color: #fff">michal66507@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const SEED = [
+  { id: 1, name: "נועה ברזילי", shootingCategory: "קליפים ואירועים", style: "קינמטי", location: "תל אביב והמרכז", price: 2500, hasWhatsApp: true, phone: "052-7612070", email: "noa@example.com", portfolio: "https://example.com/noa", bio: "מצלמת קליפים כבר חמש שנים, עם דגש על תנועה, אור טבעי ורגש. מגיעה עם צוות קטן שמאפשר גמישות מלאה ביום הצילום." },
+  { id: 2, name: "שירה אלמוג", shootingCategory: "הריון ומשפחה", style: "רומנטי", location: "חיפה והצפון", price: 1200, hasWhatsApp: true, phone: "052-7612071", email: "shira@example.com", portfolio: "https://example.com/shira", bio: "אוהבת לצלם רגעים שקטים בתוך הבלגן המשפחתי. הסטים שלי בחוץ, לרוב בשעה הזהובה." },
+  { id: 3, name: "תמר לוגסי", shootingCategory: "בת מצווה וקליפים", style: "צבעוני", location: "ירושלים והסביבה", price: 1800, hasWhatsApp: false, phone: "052-7612072", email: "tamar@example.com", portfolio: "https://example.com/tamar", bio: "מתמחה בהפקות לבנות: תסריט, לוקיישן וסטיילינג, כך שכל בת מצווה מקבלת קליפ שנראה כמו מהסרטים." },
+  { id: 4, name: "הודיה כרמי", shootingCategory: "אופנה וקמפיינים", style: "פרימיום", location: "השרון", price: 3200, hasWhatsApp: true, phone: "052-7612073", email: "hodaya@example.com", portfolio: "https://example.com/hodaya", bio: "עובדת עם מעצבות ומותגים קטנים על קמפיינים בסטודיו ובחוץ, מהקונספט ועד הרטוש הסופי." },
+  { id: 5, name: "אביגיל רוט", shootingCategory: "תדמית לעסקים", style: "נקי", location: "באר שבע והדרום", price: 950, hasWhatsApp: true, phone: "052-7612074", email: "avigail@example.com", portfolio: "https://example.com/avigail", bio: "צילומי תדמית לנשות עסקים: פשוט, מהיר ומדויק, כולל ליווי בבחירת התמונות לאתר וללינקדאין." },
+  { id: 6, name: "רננה שגב", shootingCategory: "חתונות", style: "דוקומנטרי", location: "המרכז", price: 4500, hasWhatsApp: true, phone: "052-7612075", email: "renana@example.com", portfolio: "https://example.com/renana", bio: "מצלמת חתונות בגישה דוקומנטרית, בלי בימוי מאולץ. מספקת גם קליפ קצר לצד האלבום." },
+  { id: 7, name: "מיכל אדרי", shootingCategory: "ילדים בסטודיו", style: "שובב", location: "הצפון", price: 700, hasWhatsApp: false, phone: "052-7612076", email: "michala@example.com", portfolio: "https://example.com/michala", bio: "סטודיו קטן וחמים לצילומי ילדים, עם המון סבלנות וזמן משחק לפני שמתחילים לצלם." },
+  { id: 8, name: "יעל ניסים", shootingCategory: "קליפים לנשים", style: "קינמטי", location: "ירושלים והסביבה", price: 2200, hasWhatsApp: true, phone: "052-7612077", email: "yael@example.com", portfolio: "https://example.com/yael", bio: "הפקות לנשים בלבד, מהתסריט ועד העריכה. מלווה מקרוב בבחירת המוזיקה והלוקיישן." }
+];
+
+const BANDS = [
+  { key: "all", label: "הכל", min: 0, max: Infinity },
+  { key: "a", label: "עד 1,000 ₪", min: 0, max: 1000 },
+  { key: "b", label: "1,000–2,500 ₪", min: 1000, max: 2500 },
+  { key: "c", label: "2,500–4,000 ₪", min: 2500, max: 4000 },
+  { key: "d", label: "4,000 ₪ ומעלה", min: 4000, max: Infinity }
+];
+
+const EMPTY = { name: "", shootingCategory: "", style: "", location: "", price: "", phone: "", email: "", portfolio: "", bio: "", hasWhatsApp: true };
+
+class Component extends DCLogic {
+  state = {
+    screen: "home", selectedId: null, area: "כל האזורים", cat: "כל הסגנונות", band: "all",
+    people: SEED, locked: true, pass: "", modalOpen: false, draft: null, editId: null
+  };
+
+  fmt(n) { return Number(n || 0).toLocaleString("he-IL") + " ₪"; }
+
+  decorate(p) {
+    const digits = String(p.phone || "").replace(/\D/g, "");
+    const intl = digits.replace(/^0/, "972");
+    return Object.assign({}, p, {
+      initial: (p.name || "?").trim().charAt(0),
+      priceLabel: this.fmt(p.price),
+      adminMeta: p.shootingCategory + " · " + p.location + " · " + this.fmt(p.price),
+      telLink: "tel:" + digits,
+      waLink: "https://wa.me/" + intl + "?text=" + encodeURIComponent("היי " + p.name + ", הגעתי דרך רשת היוצרות ואשמח לשמוע פרטים על צילומים."),
+      mailLink: "mailto:" + p.email + "?subject=" + encodeURIComponent("פנייה דרך רשת היוצרות") + "&body=" + encodeURIComponent("היי " + p.name + ",\n\nהגעתי אליך דרך רשת היוצרות של מיכל.\nאשמח לשמוע על זמינות ומחיר ל" + p.shootingCategory + ".\n\nתודה!"),
+      open: () => this.setState({ screen: "profile", selectedId: p.id }),
+      edit: () => this.setState({ modalOpen: true, editId: p.id, draft: Object.assign({}, p) }),
+      remove: () => this.setState(s => ({ people: s.people.filter(x => x.id !== p.id) }))
+    });
+  }
+
+  setField(k) { return e => { const v = e.target.value; this.setState(s => ({ draft: Object.assign({}, s.draft, { [k]: v }) })); }; }
+
+  save = () => {
+    const d = this.state.draft || {};
+    if (!d.name) return;
+    this.setState(s => {
+      const rec = Object.assign({}, d, { price: Number(String(d.price).replace(/\D/g, "")) || 0 });
+      const people = s.editId
+        ? s.people.map(p => (p.id === s.editId ? Object.assign({}, p, rec) : p))
+        : s.people.concat([Object.assign({ id: Date.now() }, rec)]);
+      return { people, modalOpen: false, draft: null, editId: null };
+    });
+  };
+
+  renderVals() {
+    const s = this.state;
+    const band = BANDS.find(b => b.key === s.band) || BANDS[0];
+    const list = s.people.filter(p =>
+      (s.area === "כל האזורים" || p.location === s.area) &&
+      (s.cat === "כל הסגנונות" || p.shootingCategory === s.cat) &&
+      p.price >= band.min && p.price < (band.max === Infinity ? Infinity : band.max)
+    ).map(p => this.decorate(p));
+    const current = this.decorate(s.people.find(p => p.id === s.selectedId) || s.people[0]);
+    const navBase = "min-height:44px;padding:0 9px;flex:0 0 auto;white-space:nowrap;border-radius:999px;font-size:14.5px;font-weight:600;border:1px solid transparent;background:none;color:#7A5560;";
+    const navOn = "min-height:44px;padding:0 9px;flex:0 0 auto;white-space:nowrap;border-radius:999px;font-size:14.5px;font-weight:700;border:1px solid #F0C4CF;background:#fff;color:#C7395C;";
+    const d = s.draft || EMPTY;
+
+    return {
+      isHome: s.screen === "home", isGallery: s.screen === "gallery",
+      isProfile: s.screen === "profile", isAdmin: s.screen === "admin",
+      goHome: () => this.setState({ screen: "home" }),
+      goGallery: () => this.setState({ screen: "gallery" }),
+      goAdmin: () => this.setState({ screen: "admin" }),
+      navHomeStyle: s.screen === "home" ? navOn : navBase,
+      navGalleryStyle: s.screen === "gallery" || s.screen === "profile" ? navOn : navBase,
+      navAdminStyle: s.screen === "admin" ? navOn : navBase,
+
+      values: [
+        { tag: "QUALITY", title: "אחריות ואיכות", body: "חתומים על כל פרויקט שיוצא מהרשת, מהתכנון ועד הקובץ הסופי." },
+        { tag: "PRICE", title: "ממחירים נגישים ועד פרימיום", body: "כל תקציב מקבל התאמה, בלי להתפשר על הרמה המקצועית." },
+        { tag: "AREA", title: "יוצרות מכל רחבי הארץ", body: "מהצפון ועד הדרום, תמיד יש יוצרת שמצלמת קרוב אליך." },
+        { tag: "MATCH", title: "התאמה מושלמת לצרכים שלך", body: "אנחנו מתאימות את היוצרת לסגנון, לאווירה ולקצב שמתאימים לך." }
+      ],
+      steps: [
+        { n: "1", text: "נקשיב לחזון ולתקציב" },
+        { n: "2", text: "נציע יוצרת שמתאימה לך בדיוק" },
+        { n: "3", text: "קיבלת קליפ מדהים כמו שתמיד חלמת" }
+      ],
+
+      areas: ["כל האזורים"].concat(Array.from(new Set(s.people.map(p => p.location)))),
+      cats: ["כל הסגנונות"].concat(Array.from(new Set(s.people.map(p => p.shootingCategory)))),
+      area: s.area, cat: s.cat,
+      setArea: e => this.setState({ area: e.target.value }),
+      setCat: e => this.setState({ cat: e.target.value }),
+      priceBands: BANDS.map(b => ({
+        label: b.label,
+        pick: () => this.setState({ band: b.key }),
+        style: "min-height:44px;padding:0 16px;border-radius:999px;font-size:15px;font-weight:600;border:1px solid " +
+          (s.band === b.key ? "#C7395C;background:#C7395C;color:#fff;" : "#F0C4CF;background:#FDF6F4;color:#7A5560;")
+      })),
+      list, isEmpty: list.length === 0,
+      resultLine: list.length + " יוצרות · RESULTS",
+      clearFilters: () => this.setState({ area: "כל האזורים", cat: "כל הסגנונות", band: "all" }),
+
+      current,
+
+      locked: s.locked, unlocked: !s.locked, pass: s.pass,
+      setPass: e => this.setState({ pass: e.target.value }),
+      unlock: () => this.setState({ locked: false }),
+      all: s.people.map(p => this.decorate(p)),
+      adminCount: s.people.length + " יוצרות ברשת",
+      openAdd: () => this.setState({ modalOpen: true, editId: null, draft: Object.assign({}, EMPTY) }),
+
+      modalOpen: s.modalOpen,
+      modalTitle: s.editId ? "עריכת יוצרת" : "הוספת יוצרת",
+      closeModal: () => this.setState({ modalOpen: false, draft: null, editId: null }),
+      stop: e => e.stopPropagation(),
+      fields: [
+        { label: "שם", key: "name", placeholder: "שם מלא" },
+        { label: "מה היא מצלמת", key: "shootingCategory", placeholder: "קליפים, חתונות, תדמית..." },
+        { label: "סגנון", key: "style", placeholder: "קינמטי / נקי / צבעוני" },
+        { label: "מיקום", key: "location", placeholder: "אזור או יישוב" },
+        { label: "מחיר מבוקש", key: "price", placeholder: "1500" },
+        { label: "טלפון", key: "phone", placeholder: "052-0000000" },
+        { label: "מייל", key: "email", placeholder: "name@example.com" },
+        { label: "קישור לתיק עבודות", key: "portfolio", placeholder: "https://" }
+      ].map(f => ({ label: f.label, placeholder: f.placeholder, value: d[f.key] == null ? "" : String(d[f.key]), onChange: this.setField(f.key) })),
+      bioValue: d.bio || "",
+      setBio: this.setField("bio"),
+      waValue: !!d.hasWhatsApp,
+      setWa: e => { const v = e.target.checked; this.setState(st => ({ draft: Object.assign({}, st.draft, { hasWhatsApp: v }) })); },
+      save: this.save
+    };
+  }
+}
+</script>
+</body>
+</html>
