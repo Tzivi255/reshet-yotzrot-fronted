@@ -1,7 +1,12 @@
+import { Link } from 'react-router-dom'
 import { colors, fonts, layout } from '../theme'
 import { michal } from '../data/photographers'
 
 // כותרת תחתונה - מתוך ה-<footer> שב-design-template.html.
+
+const DEV_EMAIL_LINK =
+  `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent('t0527198255@gmail.com')}` +
+  `&su=${encodeURIComponent('שאלה בנוגע לפיתוח אתר')}`
 
 export default function Footer() {
   return (
@@ -56,6 +61,44 @@ export default function Footer() {
           </a>
         </div>
       </div>
+
+      {/* <div
+        style={{
+          maxWidth: layout.maxWidth,
+          margin: '20px auto 0',
+          paddingTop: 16,
+          borderTop: '1px solid rgba(255,255,255,.14)',
+        }}
+      >
+        <div className="footer-bottom-row">
+          <span style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10, fontSize: 13, color: '#9FB4BF' }}>
+            © כל הזכויות שמורות לרשת יוצרות
+            <Link to="/accessibility" style={{ color: '#C7D6DE', textDecoration: 'underline' }}>
+              הצהרת נגישות
+            </Link>
+          </span>
+
+          <a
+            href={DEV_EMAIL_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              color: '#C7D6DE',
+              fontSize: 13.5,
+            }}
+          >
+            <img
+              src="/logo.png"
+              alt="לוגו המפתח"
+              style={{ width: 22, height: 22, borderRadius: '50%', objectFit: 'cover' }}
+            />
+            <span>נבנה על ידי Claude Code</span>
+          </a>
+        </div> */}
+      {/* </div> */}
     </footer>
   )
 }

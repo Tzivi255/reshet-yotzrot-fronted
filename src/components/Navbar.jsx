@@ -7,7 +7,7 @@ import { colors, fonts, layout } from '../theme'
 const NAV_ITEMS = [
   { key: 'home', label: 'הבית', path: '/' },
   { key: 'gallery', label: 'גלריה', path: '/gallery' },
-  { key: 'admin', label: 'ניהול', path: '/admin' },
+  // { key: 'admin', label: 'ניהול', path: '/admin' },
 ]
 
 const navBase = {

@@ -160,7 +160,7 @@ export const michal = {
   waHref:
     'https://wa.me/972527166507?text=' +
     encodeURIComponent('היי מיכל, אשמח לשמוע פרטים על רשת היוצרות.'),
-  email: 't0527198255@gmail.com',
+  email: 'michal66507@gmail.com',
 }
 
 // עזר לפורמט מחיר בשקלים, כמו fmt() בתבנית.
@@ -177,7 +177,6 @@ export function decoratePhotographer(p) {
     initial: (p.name || '?').trim().charAt(0),
     priceLabel: formatPrice(p.price),
     adminMeta: `${p.shootingCategory} · ${p.location} · ${formatPrice(p.price)}`,
-    telLink: `tel:${digits}`,
     waLink:
       `https://wa.me/${intl}?text=` +
       encodeURIComponent(`היי ${p.name}, הגעתי דרך רשת היוצרות ואשמח לשמוע פרטים על צילומים.`),

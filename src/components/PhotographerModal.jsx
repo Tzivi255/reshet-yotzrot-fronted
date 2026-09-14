@@ -88,6 +88,7 @@ export default function PhotographerModal({ initial, editing, busy = false, onSa
           </h2>
           <button
             onClick={onClose}
+            aria-label="סגירה"
             style={{
               width: 40,
               height: 40,

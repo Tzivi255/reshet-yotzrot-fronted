@@ -184,6 +184,24 @@ function ProfileView({ id }) {
               {current.shootingCategory}
             </p>
           </div>
+
+          <div
+            style={{
+              marginInlineStart: 'auto',
+              minHeight: 50,
+              padding: '0 20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 16,
+              background: colors.deep,
+              color: '#fff',
+              fontSize: 17,
+              fontWeight: 600,
+            }}
+          >
+            {current.phone}
+          </div>
         </div>
 
         <div style={{ padding: '24px 22px 28px', display: 'flex', flexDirection: 'column', gap: 22 }}>
@@ -243,24 +261,9 @@ function ProfileView({ id }) {
                 borderRadius: 20,
                 overflow: 'hidden',
                 border: `1px solid ${colors.pinkBorder}`,
+                background: '#fff',
               }}
             >
-              <div
-                style={{
-                  height: 150,
-                  backgroundImage:
-                    'repeating-linear-gradient(135deg, #EDF3F6 0 12px, #E0EAEF 12px 24px)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: fonts.mono,
-                  fontSize: 12,
-                  letterSpacing: '.12em',
-                  color: colors.chipBlueText,
-                }}
-              >
-                PORTFOLIO COVER
-              </div>
               <div
                 style={{
                   padding: '14px 16px',
@@ -312,22 +315,6 @@ function ProfileView({ id }) {
             וואטסאפ
           </a>
         )}
-        <a
-          href={current.telLink}
-          style={{
-            minHeight: 56,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 18,
-            background: colors.deep,
-            color: '#fff',
-            fontSize: 17.5,
-            fontWeight: 700,
-          }}
-        >
-          חיוג
-        </a>
         <a
           href={current.mailLink}
           target="_blank"
