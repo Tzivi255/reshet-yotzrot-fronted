@@ -5,7 +5,7 @@ import { valueCards } from '../data/photographers'
 
 export default function ValueCards({ items = valueCards }) {
   return (
-    <section style={{ padding: '8px 18px 56px' }}>
+    <section style={{ padding: '8px  18px 56px' }}>
       <div
         style={{
           maxWidth: layout.maxWidth,

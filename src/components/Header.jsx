@@ -11,20 +11,25 @@ export default function Header({ onGoGallery = () => {} }) {
   return (
     <section
       style={{
-        position: 'relative',
-        minHeight: '78vh',
+        width: '100%',
+        minHeight: 'calc(78vh - 45px)',
         display: 'flex',
         alignItems: 'flex-end',
         padding: '28px 18px 40px',
         backgroundImage: heroBackground,
         backgroundSize: 'cover',
-        backgroundPosition: '50% 22%',
+        backgroundPosition: '62% top',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: colors.bg,
+        marginBottom: -70,
       }}
     >
       <div
         style={{
+          position: 'relative',
+          zIndex: 1,
           maxWidth: layout.maxWidth,
-          margin: '0 auto',
+          margin: '100px auto',
           width: '100%',
           animation: 'riseIn .7s ease both',
         }}
@@ -113,7 +118,7 @@ export default function Header({ onGoGallery = () => {} }) {
 
           <a
             {...phoneBind}
-            href={michal.phoneHref}
+            href={`mailto:${michal.email}?subject=${encodeURIComponent('אשמח לפרטים ולהתאמת יוצרת')}`}
             style={{
               minHeight: 54,
               padding: '0 26px',

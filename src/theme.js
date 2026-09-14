@@ -34,7 +34,9 @@ export const layout = {
   maxWidth: 1120,
 }
 
-// רקע ה-Hero: מדמה שמיים/עננים בגווני הפלטה (assets/hero-clouds.png לא קיים בפרויקט).
+// רקע ה-Hero: גרדיאנט דהייה מעל תמונת המצלמה (public/camera-hero.jpg - גרסה חתוכה
+// של camera.jpg בלי השמיים הריקים בראש התמונה), במקום assets/hero-clouds.png שלא
+// קיים בפרויקט. האלפא הועלתה ביחס לתבנית המקורית כדי שהתמונה תשתלב ברקע בעדינות רבה יותר.
 export const heroBackground =
-  'linear-gradient(to top, rgba(253,246,244,1) 4%, rgba(253,246,244,.55) 34%, rgba(253,246,244,0) 72%), ' +
-  'linear-gradient(160deg, #FCEAEE, #F8C9D5)'
+  'linear-gradient(to top, rgba(253,246,244,1) 4%, rgba(253,246,244,.68) 34%, rgba(253,246,244,.3) 72%), ' +
+  "url('/camera-hero.jpg')"
