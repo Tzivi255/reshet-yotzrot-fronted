@@ -12,7 +12,7 @@ export const photographers = [
     hasWhatsApp: true,
     phone: '052-7612070',
     email: 'noa@example.com',
-    portfolio: 'https://example.com/noa',
+    portfolio: 'https://drive.google.com/drive/folders/1xj4t1trzKJ56ks4QRJ1-z85uNefLj9kI?usp=drive_link',
     bio: 'מצלמת קליפים כבר חמש שנים, עם דגש על תנועה, אור טבעי ורגש. מגיעה עם צוות קטן שמאפשר גמישות מלאה ביום הצילום.',
   },
   {
@@ -25,7 +25,7 @@ export const photographers = [
     hasWhatsApp: true,
     phone: '052-7612071',
     email: 'shira@example.com',
-    portfolio: 'https://example.com/shira',
+    portfolio: 'https://drive.google.com/drive/folders/1xj4t1trzKJ56ks4QRJ1-z85uNefLj9kI?usp=drive_link',
     bio: 'אוהבת לצלם רגעים שקטים בתוך הבלגן המשפחתי. הסטים שלי בחוץ, לרוב בשעה הזהובה.',
   },
   {
@@ -38,7 +38,7 @@ export const photographers = [
     hasWhatsApp: false,
     phone: '052-7612072',
     email: 'tamar@example.com',
-    portfolio: 'https://example.com/tamar',
+    portfolio: 'https://drive.google.com/drive/folders/1xj4t1trzKJ56ks4QRJ1-z85uNefLj9kI?usp=drive_link',
     bio: 'מתמחה בהפקות לבנות: תסריט, לוקיישן וסטיילינג, כך שכל בת מצווה מקבלת קליפ שנראה כמו מהסרטים.',
   },
   {
@@ -51,7 +51,7 @@ export const photographers = [
     hasWhatsApp: true,
     phone: '052-7612073',
     email: 'hodaya@example.com',
-    portfolio: 'https://example.com/hodaya',
+    portfolio: 'https://drive.google.com/drive/folders/1xj4t1trzKJ56ks4QRJ1-z85uNefLj9kI?usp=drive_link',
     bio: 'עובדת עם מעצבות ומותגים קטנים על קמפיינים בסטודיו ובחוץ, מהקונספט ועד הרטוש הסופי.',
   },
   {
@@ -64,7 +64,7 @@ export const photographers = [
     hasWhatsApp: true,
     phone: '052-7612074',
     email: 'avigail@example.com',
-    portfolio: 'https://example.com/avigail',
+    portfolio: 'https://drive.google.com/drive/folders/1xj4t1trzKJ56ks4QRJ1-z85uNefLj9kI?usp=drive_link',
     bio: 'צילומי תדמית לנשות עסקים: פשוט, מהיר ומדויק, כולל ליווי בבחירת התמונות לאתר וללינקדאין.',
   },
   {
@@ -77,7 +77,7 @@ export const photographers = [
     hasWhatsApp: true,
     phone: '052-7612075',
     email: 'renana@example.com',
-    portfolio: 'https://example.com/renana',
+    portfolio: 'https://drive.google.com/drive/folders/1xj4t1trzKJ56ks4QRJ1-z85uNefLj9kI?usp=drive_link',
     bio: 'מצלמת חתונות בגישה דוקומנטרית, בלי בימוי מאולץ. מספקת גם קליפ קצר לצד האלבום.',
   },
   {
@@ -90,7 +90,7 @@ export const photographers = [
     hasWhatsApp: false,
     phone: '052-7612076',
     email: 'michala@example.com',
-    portfolio: 'https://example.com/michala',
+    portfolio: 'https://drive.google.com/drive/folders/1xj4t1trzKJ56ks4QRJ1-z85uNefLj9kI?usp=drive_link',
     bio: 'סטודיו קטן וחמים לצילומי ילדים, עם המון סבלנות וזמן משחק לפני שמתחילים לצלם.',
   },
   {
@@ -103,7 +103,7 @@ export const photographers = [
     hasWhatsApp: true,
     phone: '052-7612077',
     email: 'yael@example.com',
-    portfolio: 'https://example.com/yael',
+    portfolio: 'https://drive.google.com/drive/folders/1xj4t1trzKJ56ks4QRJ1-z85uNefLj9kI?usp=drive_link',
     bio: 'הפקות לנשים בלבד, מהתסריט ועד העריכה. מלווה מקרוב בבחירת המוזיקה והלוקיישן.',
   },
 ]

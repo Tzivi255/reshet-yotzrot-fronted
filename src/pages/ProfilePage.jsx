@@ -255,7 +255,7 @@ function ProfileView({ id }) {
             <a
               href={current.portfolio}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               style={{
                 display: 'block',
                 borderRadius: 20,
