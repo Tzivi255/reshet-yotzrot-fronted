@@ -4,6 +4,18 @@ import useHover from '../hooks/useHover'
 
 // אזור ה-Hero של מסך הבית - מתוך ה-<section> הראשון ב-design-template.html.
 
+const CONTACT_SUBJECT = encodeURIComponent('אשמח לפרטים ולהתאמת יוצרת')
+
+// פותח את מסך כתיבת המייל של Gmail בטאב חדש; אם החלון נחסם (פופאפ-בלוקר וכו')
+// נופלים חזרה ל-mailto: הרגיל של הדפדפן/המחשב.
+function openContactEmail() {
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${michal.email}&su=${CONTACT_SUBJECT}`
+  const win = window.open(gmailUrl, '_blank', 'noopener,noreferrer')
+  if (!win) {
+    window.location.href = `mailto:${michal.email}?subject=${CONTACT_SUBJECT}`
+  }
+}
+
 export default function Header({ onGoGallery = () => {} }) {
   const [ctaHover, ctaBind] = useHover()
   const [phoneHover, phoneBind] = useHover()
@@ -116,24 +128,22 @@ export default function Header({ onGoGallery = () => {} }) {
             לגלריית היוצרות
           </button>
 
-          <a
+          <button
             {...phoneBind}
-            href={`mailto:${michal.email}?subject=${encodeURIComponent('אשמח לפרטים ולהתאמת יוצרת')}`}
+            onClick={openContactEmail}
             style={{
               minHeight: 54,
               padding: '0 26px',
-              display: 'inline-flex',
-              alignItems: 'center',
+              border: 0,
               borderRadius: 999,
               background: phoneHover ? colors.deepDark : colors.deep,
-              border: `1px solid ${colors.deep}`,
               color: '#fff',
               fontSize: 17,
               fontWeight: 600,
             }}
           >
             לפרטים והתאמת יוצרת
-          </a>
+          </button>
         </div>
       </div>
     </section>

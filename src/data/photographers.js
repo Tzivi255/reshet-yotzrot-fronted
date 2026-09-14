@@ -149,10 +149,15 @@ export const EMPTY_PHOTOGRAPHER = {
 }
 
 // פרטי הקשר של מיכל.
+// export const michal = {
+//   phone: '052-716-6507',
+//   phoneHref: 'tel:0527166507',
+//   email: 'michal66507@gmail.com',
+// }
 export const michal = {
   phone: '052-716-6507',
   phoneHref: 'tel:0527166507',
-  email: 'michal66507@gmail.com',
+  email: 't0527198255@gmail.com',
 }
 
 // עזר לפורמט מחיר בשקלים, כמו fmt() בתבנית.
