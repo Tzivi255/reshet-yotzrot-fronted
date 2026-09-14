@@ -24,13 +24,13 @@ const inputStyle = {
   fontSize: 16,
 }
 
-export default function PhotographerModal({ initial, editing, onSave, onClose }) {
+export default function PhotographerModal({ initial, editing, busy = false, onSave, onClose }) {
   const [draft, setDraft] = useState(() => ({ ...EMPTY_PHOTOGRAPHER, ...(initial || {}) }))
 
   const setField = (key) => (e) => setDraft((d) => ({ ...d, [key]: e.target.value }))
 
   const handleSave = () => {
-    if (!draft.name) return
+    if (!draft.name || busy) return
     onSave({ ...draft, price: Number(String(draft.price).replace(/\D/g, '')) || 0 })
   }
 
@@ -141,6 +141,7 @@ export default function PhotographerModal({ initial, editing, onSave, onClose })
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             <button
               onClick={handleSave}
+              disabled={busy}
               style={{
                 flex: 1,
                 minHeight: 54,
@@ -150,12 +151,14 @@ export default function PhotographerModal({ initial, editing, onSave, onClose })
                 color: '#fff',
                 fontSize: 17,
                 fontWeight: 700,
+                opacity: busy ? 0.7 : 1,
               }}
             >
-              שמירה
+              {busy ? 'שומר...' : 'שמירה'}
             </button>
             <button
               onClick={onClose}
+              disabled={busy}
               style={{
                 minHeight: 54,
                 padding: '0 20px',

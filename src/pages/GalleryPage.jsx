@@ -4,9 +4,10 @@ import { colors, fonts, layout } from '../theme'
 import { priceBands } from '../data/photographers'
 import { usePhotographers } from '../context/photographersStore'
 import PhotographerCard from '../components/PhotographerCard'
+import StatusMessage from '../components/StatusMessage'
 
 // מסך הגלריה - מקביל ל-sc-if isGallery שב-design-template.html.
-// כולל סינון לפי אזור, קטגוריית צילום וטווח מחירים.
+// הנתונים נטענים מה-API (דרך ה-Context), כולל מצבי טעינה ושגיאה.
 
 const ALL_AREAS = 'כל האזורים'
 const ALL_CATS = 'כל הסגנונות'
@@ -25,18 +26,18 @@ const labelSpan = { fontSize: 13, fontWeight: 700, color: colors.muted }
 
 export default function GalleryPage() {
   const navigate = useNavigate()
-  const { photographers } = usePhotographers()
+  const { photographers, loading, error, reload } = usePhotographers()
 
   const [area, setArea] = useState(ALL_AREAS)
   const [cat, setCat] = useState(ALL_CATS)
   const [band, setBand] = useState('all')
 
   const areas = useMemo(
-    () => [ALL_AREAS, ...new Set(photographers.map((p) => p.location))],
+    () => [ALL_AREAS, ...new Set(photographers.map((p) => p.location).filter(Boolean))],
     [photographers],
   )
   const cats = useMemo(
-    () => [ALL_CATS, ...new Set(photographers.map((p) => p.shootingCategory))],
+    () => [ALL_CATS, ...new Set(photographers.map((p) => p.shootingCategory).filter(Boolean))],
     [photographers],
   )
 
@@ -73,120 +74,139 @@ export default function GalleryPage() {
         יוצרות מכל רחבי הארץ, ממחירים נגישים ועד רמות פרימיום.
       </p>
 
-      <div
-        style={{
-          position: 'sticky',
-          top: 70,
-          zIndex: 30,
-          background: '#fff',
-          border: `1px solid ${colors.cardBorderSoft}`,
-          borderRadius: 22,
-          padding: 14,
-          boxShadow: '0 10px 26px rgba(90,62,71,.07)',
-          marginBottom: 22,
-        }}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gap: 12,
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          }}
-        >
-          <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <span style={labelSpan}>אזור / יישוב</span>
-            <select value={area} onChange={(e) => setArea(e.target.value)} style={selectStyle}>
-              {areas.map((a) => (
-                <option key={a} value={a}>
-                  {a}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <span style={labelSpan}>מה מצלמים</span>
-            <select value={cat} onChange={(e) => setCat(e.target.value)} style={selectStyle}>
-              {cats.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <div style={{ marginTop: 12 }}>
-          <span style={{ ...labelSpan, display: 'block', marginBottom: 8 }}>טווח מחירים</span>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {priceBands.map((b) => {
-              const on = band === b.key
-              return (
-                <button
-                  key={b.key}
-                  onClick={() => setBand(b.key)}
-                  style={{
-                    minHeight: 44,
-                    padding: '0 16px',
-                    borderRadius: 999,
-                    fontSize: 15,
-                    fontWeight: 600,
-                    border: `1px solid ${on ? colors.rose : colors.pinkBorder}`,
-                    background: on ? colors.rose : colors.bg,
-                    color: on ? '#fff' : colors.muted,
-                  }}
-                >
-                  {b.label}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </div>
+      {(loading || error) && (
+        <StatusMessage
+          loading={loading}
+          error={error}
+          onRetry={reload}
+          loadingText="טוען יוצרות..."
+        />
+      )}
 
-      <p
-        style={{
-          margin: '0 0 14px',
-          fontFamily: fonts.mono,
-          fontSize: 12,
-          letterSpacing: '.12em',
-          color: colors.chipBlueText,
-        }}
-      >
-        {list.length} יוצרות · RESULTS
-      </p>
-
-      <div
-        style={{
-          display: 'grid',
-          gap: 16,
-          gridTemplateColumns: 'repeat(auto-fill, minmax(258px, 1fr))',
-        }}
-      >
-        {list.map((p) => (
-          <PhotographerCard
-            key={p.id}
-            photographer={p}
-            onOpen={() => navigate(`/photographer/${p.id}`)}
-          />
-        ))}
-      </div>
-
-      {list.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '48px 16px', color: colors.muted }}>
-          <p style={{ margin: '0 0 14px', fontSize: 17 }}>לא נמצאו יוצרות בסינון הזה.</p>
-          <button
-            onClick={clearFilters}
+      {!loading && !error && (
+        <>
+          <div
             style={{
-              minHeight: 46,
-              padding: '0 20px',
-              borderRadius: 999,
-              border: `1px solid ${colors.pinkBorder}`,
+              position: 'sticky',
+              top: 70,
+              zIndex: 30,
               background: '#fff',
-              fontSize: 16,
+              border: `1px solid ${colors.cardBorderSoft}`,
+              borderRadius: 22,
+              padding: 14,
+              boxShadow: '0 10px 26px rgba(90,62,71,.07)',
+              marginBottom: 22,
             }}
           >
-            איפוס סינון
-          </button>
-        </div>
+            <div
+              style={{
+                display: 'grid',
+                gap: 12,
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              }}
+            >
+              <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <span style={labelSpan}>אזור / יישוב</span>
+                <select value={area} onChange={(e) => setArea(e.target.value)} style={selectStyle}>
+                  {areas.map((a) => (
+                    <option key={a} value={a}>
+                      {a}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <span style={labelSpan}>מה מצלמים</span>
+                <select value={cat} onChange={(e) => setCat(e.target.value)} style={selectStyle}>
+                  {cats.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <div style={{ marginTop: 12 }}>
+              <span style={{ ...labelSpan, display: 'block', marginBottom: 8 }}>טווח מחירים</span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {priceBands.map((b) => {
+                  const on = band === b.key
+                  return (
+                    <button
+                      key={b.key}
+                      onClick={() => setBand(b.key)}
+                      style={{
+                        minHeight: 44,
+                        padding: '0 16px',
+                        borderRadius: 999,
+                        fontSize: 15,
+                        fontWeight: 600,
+                        border: `1px solid ${on ? colors.rose : colors.pinkBorder}`,
+                        background: on ? colors.rose : colors.bg,
+                        color: on ? '#fff' : colors.muted,
+                      }}
+                    >
+                      {b.label}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+
+          <p
+            style={{
+              margin: '0 0 14px',
+              fontFamily: fonts.mono,
+              fontSize: 12,
+              letterSpacing: '.12em',
+              color: colors.chipBlueText,
+            }}
+          >
+            {list.length} יוצרות · RESULTS
+          </p>
+
+          <div
+            style={{
+              display: 'grid',
+              gap: 16,
+              gridTemplateColumns: 'repeat(auto-fill, minmax(258px, 1fr))',
+            }}
+          >
+            {list.map((p) => (
+              <PhotographerCard
+                key={p.id}
+                photographer={p}
+                onOpen={() => navigate(`/photographer/${p.id}`)}
+              />
+            ))}
+          </div>
+
+          {list.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '48px 16px', color: colors.muted }}>
+              <p style={{ margin: '0 0 14px', fontSize: 17 }}>
+                {photographers.length === 0
+                  ? 'עדיין אין יוצרות במערכת.'
+                  : 'לא נמצאו יוצרות בסינון הזה.'}
+              </p>
+              {photographers.length > 0 && (
+                <button
+                  onClick={clearFilters}
+                  style={{
+                    minHeight: 46,
+                    padding: '0 20px',
+                    borderRadius: 999,
+                    border: `1px solid ${colors.pinkBorder}`,
+                    background: '#fff',
+                    fontSize: 16,
+                  }}
+                >
+                  איפוס סינון
+                </button>
+              )}
+            </div>
+          )}
+        </>
       )}
     </main>
   )

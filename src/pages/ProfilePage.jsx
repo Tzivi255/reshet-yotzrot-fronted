@@ -1,9 +1,13 @@
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { colors, fonts } from '../theme'
 import { decoratePhotographer } from '../data/photographers'
-import { usePhotographers } from '../context/photographersStore'
+import { getPhotographer } from '../api/photographers'
+import StatusMessage from '../components/StatusMessage'
 
 // עמוד פרופיל מפורט ליוצרת בודדת - מקביל ל-sc-if isProfile שב-design-template.html.
+// היוצרת נטענת ישירות מה-API לפי ה-id שב-URL, עם מצבי טעינה / שגיאה / לא-נמצא.
+// ה-key על ProfileView מבטיח mount נקי בכל מעבר בין יוצרות.
 
 const statBox = (bg) => ({
   background: bg,
@@ -13,33 +17,89 @@ const statBox = (bg) => ({
 
 export default function ProfilePage() {
   const { id } = useParams()
+  return <ProfileView key={id} id={id} />
+}
+
+function ProfileView({ id }) {
   const navigate = useNavigate()
-  const { getPhotographer } = usePhotographers()
 
-  const raw = getPhotographer(id)
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [notFound, setNotFound] = useState(false)
+  const [attempt, setAttempt] = useState(0)
 
-  if (!raw) {
+  // עדכוני ה-state קורים רק בתוך ה-callbacks האסינכרוניים של ה-fetch.
+  useEffect(() => {
+    let alive = true
+    getPhotographer(id)
+      .then((res) => {
+        if (!alive) return
+        if (!res) setNotFound(true)
+        else setData(res)
+      })
+      .catch((err) => {
+        if (!alive) return
+        if (err.status === 404) setNotFound(true)
+        else setError(err.message || 'שגיאה בטעינת הפרופיל')
+      })
+      .finally(() => {
+        if (alive) setLoading(false)
+      })
+    return () => {
+      alive = false
+    }
+  }, [id, attempt])
+
+  // רענון יזום מכפתור "נסו שוב" - איפוס ה-state מתוך אירוע המשתמש.
+  const retry = () => {
+    setLoading(true)
+    setError(null)
+    setNotFound(false)
+    setAttempt((a) => a + 1)
+  }
+
+  const backButton = (
+    <button
+      onClick={() => navigate('/gallery')}
+      style={{
+        minHeight: 46,
+        padding: '0 20px',
+        borderRadius: 999,
+        border: `1px solid ${colors.pinkBorder}`,
+        background: '#fff',
+        fontSize: 16,
+      }}
+    >
+      חזרה לגלריה
+    </button>
+  )
+
+  if (loading || error) {
     return (
-      <main style={{ maxWidth: 900, margin: '0 auto', padding: '40px 18px 96px', textAlign: 'center' }}>
-        <p style={{ fontSize: 17, color: colors.muted, marginBottom: 16 }}>היוצרת לא נמצאה.</p>
-        <button
-          onClick={() => navigate('/gallery')}
-          style={{
-            minHeight: 46,
-            padding: '0 20px',
-            borderRadius: 999,
-            border: `1px solid ${colors.pinkBorder}`,
-            background: '#fff',
-            fontSize: 16,
-          }}
-        >
-          חזרה לגלריה
-        </button>
+      <main style={{ maxWidth: 900, margin: '0 auto', padding: '40px 18px 96px' }}>
+        <StatusMessage
+          loading={loading}
+          error={error}
+          onRetry={retry}
+          loadingText="טוען פרופיל..."
+        />
       </main>
     )
   }
 
-  const current = decoratePhotographer(raw)
+  if (notFound || !data) {
+    return (
+      <main
+        style={{ maxWidth: 900, margin: '0 auto', padding: '40px 18px 96px', textAlign: 'center' }}
+      >
+        <p style={{ fontSize: 17, color: colors.muted, marginBottom: 16 }}>היוצרת לא נמצאה.</p>
+        {backButton}
+      </main>
+    )
+  }
+
+  const current = decoratePhotographer(data)
 
   return (
     <main style={{ maxWidth: 900, margin: '0 auto', padding: '20px 18px 96px' }}>

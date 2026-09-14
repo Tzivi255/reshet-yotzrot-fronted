@@ -3,17 +3,27 @@ import { colors, fonts, layout } from '../theme'
 import { decoratePhotographer } from '../data/photographers'
 import { usePhotographers } from '../context/photographersStore'
 import PhotographerModal from '../components/PhotographerModal'
+import StatusMessage from '../components/StatusMessage'
 
 // דף הניהול - מקביל ל-sc-if isAdmin שב-design-template.html.
-// כניסה מוגנת בסיסמה (דמו: כל סיסמה תעבוד), רשימת יוצרות עם הוספה / עריכה / מחיקה.
+// כניסה מוגנת בסיסמה (דמו: כל סיסמה תעבוד), רשימת יוצרות מה-API עם הוספה / עריכה / מחיקה.
 
 export default function AdminPage() {
-  const { photographers, addPhotographer, updatePhotographer, removePhotographer } =
-    usePhotographers()
+  const {
+    photographers,
+    loading,
+    error,
+    reload,
+    addPhotographer,
+    updatePhotographer,
+    removePhotographer,
+  } = usePhotographers()
 
   const [locked, setLocked] = useState(true)
   const [pass, setPass] = useState('')
-  const [modal, setModal] = useState(null) // null | { editId: number | null, initial: object }
+  const [modal, setModal] = useState(null) // null | { editId, initial }
+  const [busy, setBusy] = useState(false)
+  const [actionError, setActionError] = useState(null)
 
   if (locked) {
     return (
@@ -74,13 +84,31 @@ export default function AdminPage() {
     )
   }
 
-  const handleSave = (rec) => {
-    if (modal?.editId) {
-      updatePhotographer(modal.editId, rec)
-    } else {
-      addPhotographer(rec)
+  const handleSave = async (rec) => {
+    setBusy(true)
+    setActionError(null)
+    try {
+      if (modal?.editId) {
+        await updatePhotographer(modal.editId, rec)
+      } else {
+        await addPhotographer(rec)
+      }
+      setModal(null)
+    } catch (err) {
+      setActionError(err.message || 'שמירת היוצרת נכשלה')
+    } finally {
+      setBusy(false)
     }
-    setModal(null)
+  }
+
+  const handleRemove = async (id) => {
+    if (!window.confirm('למחוק את היוצרת מהרשת?')) return
+    setActionError(null)
+    try {
+      await removePhotographer(id)
+    } catch (err) {
+      setActionError(err.message || 'מחיקת היוצרת נכשלה')
+    }
   }
 
   return (
@@ -107,7 +135,7 @@ export default function AdminPage() {
             ניהול יוצרות
           </h1>
           <p style={{ margin: 0, fontSize: 15.5, color: colors.muted }}>
-            {photographers.length} יוצרות ברשת
+            {loading ? 'טוען...' : `${photographers.length} יוצרות ברשת`}
           </p>
         </div>
         <button
@@ -127,7 +155,37 @@ export default function AdminPage() {
         </button>
       </div>
 
+      {actionError && (
+        <div
+          style={{
+            background: '#FDF1F3',
+            border: '1px solid #F6C9D4',
+            color: colors.roseDark,
+            borderRadius: 14,
+            padding: '12px 16px',
+            marginBottom: 14,
+            fontSize: 15,
+            fontWeight: 600,
+          }}
+        >
+          {actionError}
+        </div>
+      )}
+
+      {(loading || error) && (
+        <StatusMessage
+          loading={loading}
+          error={error}
+          onRetry={reload}
+          loadingText="טוען יוצרות..."
+        />
+      )}
+
+      {!loading && !error && (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {photographers.length === 0 && (
+          <p style={{ fontSize: 15.5, color: colors.muted }}>עדיין אין יוצרות. הוסיפו את הראשונה!</p>
+        )}
         {photographers.map((raw) => {
           const p = decoratePhotographer(raw)
           return (
@@ -181,7 +239,7 @@ export default function AdminPage() {
                   עריכה
                 </button>
                 <button
-                  onClick={() => removePhotographer(raw.id)}
+                  onClick={() => handleRemove(raw.id)}
                   style={{
                     minHeight: 44,
                     padding: '0 16px',
@@ -200,13 +258,15 @@ export default function AdminPage() {
           )
         })}
       </div>
+      )}
 
       {modal && (
         <PhotographerModal
           editing={!!modal.editId}
           initial={modal.initial}
+          busy={busy}
           onSave={handleSave}
-          onClose={() => setModal(null)}
+          onClose={() => (busy ? null : setModal(null))}
         />
       )}
     </main>
