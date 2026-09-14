@@ -136,23 +136,38 @@ function ProfileView({ id }) {
             alignItems: 'center',
           }}
         >
-          <div
-            style={{
-              width: 92,
-              height: 92,
-              borderRadius: '50%',
-              background: '#fff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontFamily: fonts.display,
-              fontSize: 34,
-              color: colors.rose,
-              boxShadow: '0 8px 20px rgba(148,36,63,.16)',
-            }}
-          >
-            {current.initial}
-          </div>
+          {current.logoUrl ? (
+            <img
+              src={current.logoUrl}
+              alt={`לוגו ${current.name}`}
+              style={{
+                width: 92,
+                height: 92,
+                borderRadius: '50%',
+                objectFit: 'cover',
+                background: '#fff',
+                boxShadow: '0 8px 20px rgba(148,36,63,.16)',
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: 92,
+                height: 92,
+                borderRadius: '50%',
+                background: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: fonts.display,
+                fontSize: 34,
+                color: colors.rose,
+                boxShadow: '0 8px 20px rgba(148,36,63,.16)',
+              }}
+            >
+              {current.initial}
+            </div>
+          )}
           <div>
             <h1
               style={{

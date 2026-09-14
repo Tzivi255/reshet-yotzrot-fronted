@@ -144,6 +144,8 @@ export const EMPTY_PHOTOGRAPHER = {
   portfolio: '',
   bio: '',
   hasWhatsApp: true,
+  logoUrl: '',
+  logoFile: null,
 }
 
 // פרטי הקשר של מיכל.

@@ -40,6 +40,16 @@ function toApi(model) {
   }
 }
 
+// מודל ה-UI -> FormData (כולל קובץ הלוגו, לשליחה כ-multipart אל ה-Backend)
+function toFormData(model) {
+  const fd = new FormData()
+  Object.entries(toApi(model)).forEach(([key, value]) => {
+    fd.append(key, value == null ? '' : String(value))
+  })
+  if (model.logoFile) fd.append('logo', model.logoFile)
+  return fd
+}
+
 export function getPhotographers() {
   return request(RESOURCE).then((rows) =>
     Array.isArray(rows) ? rows.map(fromApi) : [],
@@ -53,14 +63,14 @@ export function getPhotographer(id) {
 export function createPhotographer(model) {
   return request(RESOURCE, {
     method: 'POST',
-    body: JSON.stringify(toApi(model)),
+    body: toFormData(model),
   }).then(fromApi)
 }
 
 export function updatePhotographer(id, model) {
   return request(`${RESOURCE}/${id}`, {
     method: 'PUT',
-    body: JSON.stringify(toApi(model)),
+    body: toFormData(model),
   }).then(fromApi)
 }
 

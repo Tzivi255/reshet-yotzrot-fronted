@@ -13,10 +13,15 @@ export class ApiError extends Error {
 
 export async function request(path, options = {}) {
   let res
+  // עבור FormData (העלאת קובץ לוגו) לא קובעים Content-Type ידנית -
+  // הדפדפן חייב לקבוע אותו בעצמו כולל ה-boundary המתאים.
+  const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData
   try {
     res = await fetch(`${API_BASE}${path}`, {
-      headers: { 'Content-Type': 'application/json' },
       ...options,
+      headers: isFormData
+        ? options.headers
+        : { 'Content-Type': 'application/json', ...options.headers },
     })
   } catch {
     // השרת לא זמין / אין רשת / CORS נכשל

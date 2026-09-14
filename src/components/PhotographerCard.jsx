@@ -7,7 +7,7 @@ import useHover from '../hooks/useHover'
 export default function PhotographerCard({ photographer, onOpen = () => {} }) {
   const [btnHover, btnBind] = useHover()
 
-  const { name, shootingCategory, location, price } = photographer
+  const { name, shootingCategory, location, price, logoUrl } = photographer
   const initial = (name || '?').trim().charAt(0)
   const priceLabel = formatPrice(price)
 
@@ -33,24 +33,39 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
           position: 'relative',
         }}
       >
-        <div
-          style={{
-            width: 74,
-            height: 74,
-            borderRadius: '50%',
-            background: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: fonts.display,
-            fontSize: 26,
-            color: colors.rose,
-            boxShadow: '0 6px 16px rgba(148,36,63,.16)',
-          }}
-        >
-          {initial}
-        </div>
-        <span
+        {logoUrl ? (
+          <img
+            src={logoUrl}
+            alt={`לוגו ${name}`}
+            style={{
+              width: 74,
+              height: 74,
+              borderRadius: '50%',
+              objectFit: 'cover',
+              background: '#fff',
+              boxShadow: '0 6px 16px rgba(148,36,63,.16)',
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: 74,
+              height: 74,
+              borderRadius: '50%',
+              background: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: fonts.display,
+              fontSize: 26,
+              color: colors.rose,
+              boxShadow: '0 6px 16px rgba(148,36,63,.16)',
+            }}
+          >
+            {initial}
+          </div>
+        )}
+        {/* <span
           style={{
             position: 'absolute',
             top: 12,
@@ -65,7 +80,7 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
           }}
         >
           LOGO
-        </span>
+        </span> */}
       </div>
 
       <div

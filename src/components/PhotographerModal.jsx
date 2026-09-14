@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { colors, fonts } from '../theme'
 import { EMPTY_PHOTOGRAPHER } from '../data/photographers'
 
@@ -26,8 +26,23 @@ const inputStyle = {
 
 export default function PhotographerModal({ initial, editing, busy = false, onSave, onClose }) {
   const [draft, setDraft] = useState(() => ({ ...EMPTY_PHOTOGRAPHER, ...(initial || {}) }))
+  const [logoPreview, setLogoPreview] = useState(initial?.logoUrl || '')
+
+  // ניקוי כתובת ה-blob של תצוגת הלוגו כשמחליפים תמונה או סוגרים את המודאל
+  useEffect(() => {
+    return () => {
+      if (logoPreview && logoPreview.startsWith('blob:')) URL.revokeObjectURL(logoPreview)
+    }
+  }, [logoPreview])
 
   const setField = (key) => (e) => setDraft((d) => ({ ...d, [key]: e.target.value }))
+
+  const handleLogoChange = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setDraft((d) => ({ ...d, logoFile: file }))
+    setLogoPreview(URL.createObjectURL(file))
+  }
 
   const handleSave = () => {
     if (!draft.name || busy) return
@@ -100,6 +115,43 @@ export default function PhotographerModal({ initial, editing, busy = false, onSa
               />
             </label>
           ))}
+
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <span style={{ fontSize: 13.5, fontWeight: 700, color: colors.muted }}>לוגו (JPG / PNG)</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              {logoPreview ? (
+                <img
+                  src={logoPreview}
+                  alt="תצוגה מקדימה של הלוגו"
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: `1px solid ${colors.pinkBorder}`,
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: '50%',
+                    background: '#FDF1F3',
+                    color: colors.rose,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: fonts.display,
+                    fontSize: 20,
+                  }}
+                >
+                  {(draft.name || '?').trim().charAt(0)}
+                </div>
+              )}
+              <input type="file" accept="image/jpeg,image/png" onChange={handleLogoChange} style={{ flex: 1, fontSize: 14 }} />
+            </div>
+          </label>
 
           <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={{ fontSize: 13.5, fontWeight: 700, color: colors.muted }}>כמה מילים עלי</span>
