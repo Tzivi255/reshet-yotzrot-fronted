@@ -157,6 +157,9 @@ export const EMPTY_PHOTOGRAPHER = {
 export const michal = {
   phone: '052-716-6507',
   phoneHref: 'tel:0527166507',
+  waHref:
+    'https://wa.me/972527166507?text=' +
+    encodeURIComponent('היי מיכל, אשמח לשמוע פרטים על רשת היוצרות.'),
   email: 't0527198255@gmail.com',
 }
 
@@ -179,8 +182,8 @@ export function decoratePhotographer(p) {
       `https://wa.me/${intl}?text=` +
       encodeURIComponent(`היי ${p.name}, הגעתי דרך רשת היוצרות ואשמח לשמוע פרטים על צילומים.`),
     mailLink:
-      `mailto:${p.email}?subject=` +
-      encodeURIComponent('פנייה דרך רשת היוצרות') +
+      `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(p.email)}` +
+      `&su=${encodeURIComponent('פנייה דרך רשת היוצרות')}` +
       '&body=' +
       encodeURIComponent(
         `היי ${p.name},\n\nהגעתי אליך דרך רשת היוצרות של מיכל.\nאשמח לשמוע על זמינות ומחיר ל${p.shootingCategory}.\n\nתודה!`,

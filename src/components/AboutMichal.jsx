@@ -47,7 +47,9 @@ export default function AboutMichal() {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, minWidth: 240 }}>
           <a
-            href={michal.phoneHref}
+            href={michal.waHref}
+            target="_blank"
+            rel="noreferrer"
             style={{
               minHeight: 50,
               display: 'flex',
@@ -64,7 +66,9 @@ export default function AboutMichal() {
             {michal.phone}
           </a>
           <a
-            href={`mailto:${michal.email}`}
+            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(michal.email)}&su=${encodeURIComponent('פנייה דרך רשת היוצרות')}`}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               minHeight: 50,
               display: 'flex',

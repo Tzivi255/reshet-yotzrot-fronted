@@ -330,6 +330,8 @@ function ProfileView({ id }) {
         </a>
         <a
           href={current.mailLink}
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             minHeight: 56,
             display: 'flex',

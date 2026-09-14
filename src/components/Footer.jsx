@@ -46,7 +46,12 @@ export default function Footer() {
             {michal.phone}
           </a>
           <span style={{ color: '#6C8896' }}>·</span>
-          <a href={`mailto:${michal.email}`} style={{ color: '#fff' }}>
+          <a
+            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(michal.email)}&su=${encodeURIComponent('פנייה דרך רשת היוצרות')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#fff' }}
+          >
             {michal.email}
           </a>
         </div>
