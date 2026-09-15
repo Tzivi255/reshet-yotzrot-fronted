@@ -24,9 +24,13 @@ const inputStyle = {
   fontSize: 16,
 }
 
+// שדות חובה בבק-אנד (Profile.js) - נבדקים כאן כדי לא לשלוח בקשה שנכשלת מראש.
+const REQUIRED_KEYS = ['name', 'shootingCategory', 'phone', 'email']
+
 export default function PhotographerModal({ initial, editing, busy = false, onSave, onClose }) {
   const [draft, setDraft] = useState(() => ({ ...EMPTY_PHOTOGRAPHER, ...(initial || {}) }))
   const [logoPreview, setLogoPreview] = useState(initial?.logoUrl || '')
+  const [formError, setFormError] = useState('')
 
   // ניקוי כתובת ה-blob של תצוגת הלוגו כשמחליפים תמונה או סוגרים את המודאל
   useEffect(() => {
@@ -45,7 +49,14 @@ export default function PhotographerModal({ initial, editing, busy = false, onSa
   }
 
   const handleSave = () => {
-    if (!draft.name || busy) return
+    if (busy) return
+    const missing = REQUIRED_KEYS.filter((key) => !String(draft[key] ?? '').trim())
+    if (missing.length) {
+      const labels = FIELDS.filter((f) => missing.includes(f.key)).map((f) => f.label)
+      setFormError(`שדות חובה חסרים: ${labels.join(', ')}`)
+      return
+    }
+    setFormError('')
     onSave({ ...draft, price: Number(String(draft.price).replace(/\D/g, '')) || 0 })
   }
 
@@ -87,6 +98,7 @@ export default function PhotographerModal({ initial, editing, busy = false, onSa
             {editing ? 'עריכת יוצרת' : 'הוספת יוצרת'}
           </h2>
           <button
+            type="button"
             onClick={onClose}
             aria-label="סגירה"
             style={{
@@ -191,8 +203,25 @@ export default function PhotographerModal({ initial, editing, busy = false, onSa
             <span style={{ fontSize: 16, fontWeight: 600 }}>יש וואטסאפ</span>
           </label>
 
+          {formError && (
+            <div
+              style={{
+                background: '#FDF1F3',
+                border: '1px solid #F6C9D4',
+                color: colors.roseDark,
+                borderRadius: 14,
+                padding: '10px 14px',
+                fontSize: 14.5,
+                fontWeight: 600,
+              }}
+            >
+              {formError}
+            </div>
+          )}
+
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             <button
+              type="button"
               onClick={handleSave}
               disabled={busy}
               style={{
@@ -210,6 +239,7 @@ export default function PhotographerModal({ initial, editing, busy = false, onSa
               {busy ? 'שומר...' : 'שמירה'}
             </button>
             <button
+              type="button"
               onClick={onClose}
               disabled={busy}
               style={{
