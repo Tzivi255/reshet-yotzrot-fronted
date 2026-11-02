@@ -25,7 +25,9 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
     >
       <div
         style={{
-          height: 132,
+          // גובה + ריפוד עליון: מפנים מקום לתגית ההנחה כדי שלא תסתיר את הלוגו
+          height: 152,
+          paddingTop: 30,
           background: 'linear-gradient(135deg, #FBDCE3, #F8C9D5)',
           display: 'flex',
           alignItems: 'center',
@@ -65,6 +67,30 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
             {initial}
           </div>
         )}
+        {/* תגית מבצע - 5% הנחה לסוגרות דרך האתר */}
+        <span
+          style={{
+            position: 'absolute',
+            top: 12,
+            insetInlineStart: 12,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 5,
+            padding: '5px 10px',
+            borderRadius: 8,
+            // אותו צהוב-קרם של תגית המחיר וחלונית ההטבה
+            background: colors.chipAmberBg,
+            color: colors.chipAmberText,
+            fontSize: 12.5,
+            fontWeight: 700,
+            lineHeight: 1.2,
+            boxShadow: '0 4px 12px rgba(138,84,16,.16)',
+            border: '1px solid rgba(138,84,16,.18)',
+          }}
+        >
+          <span aria-hidden="true">🏷️</span>
+          5% הנחה לסוגרות דרך האתר
+        </span>
         {/* <span
           style={{
             position: 'absolute',

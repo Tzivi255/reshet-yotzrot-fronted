@@ -332,7 +332,7 @@ function ProfileView({ id }) {
             fontWeight: 700,
           }}
         >
-          מייל
+          שליחת מייל ישירות לצלמת לפרטים נוספים
         </a>
       </div>
     </main>

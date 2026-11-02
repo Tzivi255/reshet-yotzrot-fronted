@@ -10,7 +10,7 @@ const DEV_EMAIL_LINK =
 
 export default function Footer() {
   return (
-    <footer style={{ background: colors.deep, color: '#E8EEF1', padding: '30px 18px 40px' }}>
+    <footer style={{ background: colors.deep, color: '#E8EEF1', padding: '38px 18px 48px' }}>
       <div
         style={{
           maxWidth: layout.maxWidth,
@@ -23,13 +23,13 @@ export default function Footer() {
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <span style={{ fontFamily: fonts.display, fontSize: 18, color: '#fff' }}>
+          <span style={{ fontFamily: fonts.display, fontSize: 26, color: '#fff' }}>
             רשת היוצרות
           </span>
           <span
             style={{
               fontFamily: fonts.mono,
-              fontSize: 10,
+              fontSize: 12.5,
               letterSpacing: '.18em',
               color: colors.amber,
             }}
@@ -41,9 +41,9 @@ export default function Footer() {
           style={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: 10,
+            gap: 12,
             alignItems: 'center',
-            fontSize: 14.5,
+            fontSize: 18,
             color: '#C7D6DE',
           }}
         >

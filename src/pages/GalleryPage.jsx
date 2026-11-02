@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { colors, fonts, layout } from '../theme'
-import { priceBands } from '../data/photographers'
+import { priceBands, inPriceBand } from '../data/photographers'
 import { usePhotographers } from '../context/photographersStore'
 import PhotographerCard from '../components/PhotographerCard'
 import StatusMessage from '../components/StatusMessage'
@@ -22,6 +22,23 @@ const selectStyle = {
   color: colors.ink,
 }
 
+// ערבוב Fisher-Yates עם מחולל מספרים פסאודו-אקראי (mulberry32) שמבוסס על seed קבוע.
+function shuffleWithSeed(items, seed) {
+  let t = seed >>> 0
+  const rand = () => {
+    t = (t + 0x6d2b79f5) >>> 0
+    let r = Math.imul(t ^ (t >>> 15), 1 | t)
+    r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296
+  }
+  const out = [...items]
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1))
+    ;[out[i], out[j]] = [out[j], out[i]]
+  }
+  return out
+}
+
 const labelSpan = { fontSize: 13, fontWeight: 700, color: colors.muted }
 
 export default function GalleryPage() {
@@ -31,6 +48,11 @@ export default function GalleryPage() {
   const [area, setArea] = useState(ALL_AREAS)
   const [cat, setCat] = useState(ALL_CATS)
   const [band, setBand] = useState('all')
+
+  // סדר אקראי בכל כניסה לגלריה, כדי שלא תמיד אותה יוצרת תופיע ראשונה.
+  // המפתח האקראי נקבע פעם אחת לכל כניסה לעמוד, כך שהסדר לא משתנה בזמן שמשנים סינונים.
+  const [seed] = useState(() => Math.floor(Math.random() * 2 ** 31))
+  const shuffled = useMemo(() => shuffleWithSeed(photographers, seed), [photographers, seed])
 
   const areas = useMemo(
     () => [ALL_AREAS, ...new Set(photographers.map((p) => p.location).filter(Boolean))],
@@ -43,14 +65,13 @@ export default function GalleryPage() {
 
   const list = useMemo(() => {
     const b = priceBands.find((x) => x.key === band) || priceBands[0]
-    return photographers.filter(
+    return shuffled.filter(
       (p) =>
         (area === ALL_AREAS || p.location === area) &&
         (cat === ALL_CATS || p.shootingCategory === cat) &&
-        p.price >= b.min &&
-        p.price < (b.max === Infinity ? Infinity : b.max),
+        inPriceBand(p.price, b),
     )
-  }, [photographers, area, cat, band])
+  }, [shuffled, area, cat, band])
 
   const clearFilters = () => {
     setArea(ALL_AREAS)

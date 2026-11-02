@@ -1,5 +1,14 @@
 /* בסיס העיצוב - נלקח מ-<helmet> שב-design-template.html */
 
+/* פונט המותג מתוך חומרי הלקוחה (Index DL Bold) - לכותרת "רשת היוצרות" */
+@font-face {
+  font-family: "Index Brand";
+  src: url("/fonts/index-bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 html,
 body {
   margin: 0;
@@ -63,6 +72,206 @@ textarea {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* ===== אנימציות כניסה ואלמנטים דינמיים (לפי מסמך התיקונים) ===== */
+
+/* זום איטי ועדין על תמונת הרקע של ה-Hero */
+@keyframes heroZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.07);
+  }
+}
+
+/* כניסת הלוגו - דהייה עם הגדלה קלה */
+@keyframes logoIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* כניסת הכותרת הגדולה - עלייה עם טשטוש שמתבהר */
+@keyframes titleIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ברק אור שעובר על הכותרת הגדולה */
+@keyframes shimmer {
+  0%,
+  55% {
+    background-position: 160% 0;
+  }
+  100% {
+    background-position: -60% 0;
+  }
+}
+
+/* סמן ההקלדה */
+@keyframes caretBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* "בוקה" - נקודות אור שמרחפות כלפי מעלה ברקע ה-Hero */
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.8);
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-220px) scale(1.15);
+  }
+}
+
+/* פינות עינית המצלמה - פעימה עדינה */
+@keyframes viewfinderPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* חשיפה בגלילה - מופעל ע"י useReveal (class is-visible) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* כניסה דרמטית יותר - לאזור "איך זה עובד" */
+.reveal.reveal-rise {
+  transform: translateY(70px) scale(0.96);
+  filter: blur(6px);
+  transition:
+    opacity 1s ease,
+    transform 1.1s cubic-bezier(0.16, 0.84, 0.24, 1),
+    filter 1s ease;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.reveal-rise.is-visible {
+  transform: none;
+  filter: none;
+}
+
+/* ===== חלונית ההטבה (5% הנחה) ===== */
+
+@keyframes popupSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-140px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes popupSlideUp {
+  to {
+    opacity: 0;
+    transform: translateY(-60px) scale(0.97);
+  }
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes popupFadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ברק אור שעובר על חלונית ההטבה */
+@keyframes bannerShine {
+  0%,
+  70% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(320%) skewX(-20deg);
+  }
+}
+
+/* הרמה עדינה של כרטיסים במעבר עכבר */
+.lift-card {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.lift-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(90, 62, 71, 0.1);
+}
+
+/* כיבוד העדפת "הפחתת תנועה" של מערכת ההפעלה */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal,
+  .reveal.reveal-rise {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+html.a11y-no-motion .reveal,
+html.a11y-no-motion .reveal.reveal-rise {
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 /* שורת הקרדיט/זכויות יוצרים בתחתית ה-Footer - רווח בין הצדדים במחשב, עמודה ממורכזת בנייד */

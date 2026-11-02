@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import LegalBar from './components/LegalBar'
 import AccessibilityWidget from './components/AccessibilityWidget'
+import DiscountPopup from './components/DiscountPopup'
 import HomePage from './pages/HomePage'
 import GalleryPage from './pages/GalleryPage'
 import ProfilePage from './pages/ProfilePage'
@@ -47,6 +48,8 @@ export default function App() {
           <Footer />
           <LegalBar />
           <AccessibilityWidget />
+          {/* חלונית ההטבה - קופצת 2 שניות אחרי עליית האתר */}
+          <DiscountPopup />
         </div>
       </BrowserRouter>
     </PhotographersProvider>

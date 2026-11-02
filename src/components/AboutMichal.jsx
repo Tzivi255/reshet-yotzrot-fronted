@@ -1,12 +1,14 @@
 import { colors, fonts, layout } from '../theme'
 import { michal } from '../data/photographers'
+import Reveal from './Reveal'
+import WhatsAppIcon from './WhatsAppIcon'
 
 // אזור ההיכרות עם מיכל במסך הבית - מתוך ה-<section> הרביעי ב-design-template.html.
 
 export default function AboutMichal() {
   return (
     <section style={{ padding: '0 18px 72px' }}>
-      <div
+      <Reveal
         style={{
           maxWidth: layout.maxWidth,
           margin: '0 auto',
@@ -39,15 +41,16 @@ export default function AboutMichal() {
               fontSize: 'clamp(24px, 6vw, 34px)',
             }}
           >
-            מיכל · מפיקה ומנהלת רשת היוצרות
+            מיכל וויג · מפיקה ומנהלת רשת היוצרות
           </h2>
           <p style={{ margin: 0, fontSize: 16, color: colors.muted }}>
-            אחרי שנים של הפקת קליפים ברמה הגבוהה ביותר והכשרת עשרות יוצרות מוכשרות, הגיע הזמן להרחיב את המעגל.
+            אחרי שנים של הפקת קליפים ברמה הגבוהה ביותר והכשרת עשרות יוצרות מוכשרות, הגיע הזמן להרחיב את המעגל 😊
           </p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, minWidth: 240 }}>
           <a
             href={michal.waHref}
+            aria-label={`וואטסאפ ${michal.phone}`}
             target="_blank"
             rel="noreferrer"
             style={{
@@ -63,6 +66,7 @@ export default function AboutMichal() {
               fontWeight: 600,
             }}
           >
+            <WhatsAppIcon size={22} />
             {michal.phone}
           </a>
           <a
@@ -84,7 +88,7 @@ export default function AboutMichal() {
             {michal.email}
           </a>
         </div>
-      </div>
+      </Reveal>
     </section>
   )
 }

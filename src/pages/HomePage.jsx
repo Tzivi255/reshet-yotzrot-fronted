@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
-import ValueCards from '../components/ValueCards'
 import HowItWorks from '../components/HowItWorks'
 import AboutMichal from '../components/AboutMichal'
 
@@ -12,7 +11,6 @@ export default function HomePage() {
   return (
     <main>
       <Header onGoGallery={() => navigate('/gallery')} />
-      <ValueCards />
       <HowItWorks />
       <AboutMichal />
     </main>
