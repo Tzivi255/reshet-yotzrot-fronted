@@ -64,6 +64,7 @@ export default function Header({ onGoGallery = () => {} }) {
         marginBottom: -70,
       }}
     >
+      <meta name="google-site-verification" content="bNdCZy2TXrj8yNeFASERjKfwKnAKf5OOIxXuMylb46Q" />
       {/* שכבת הרקע - בנפרד כדי שאפשר יהיה להפעיל עליה זום איטי בלי להזיז את התוכן */}
       <div
         aria-hidden="true"
