@@ -193,7 +193,8 @@ export default function DiscountPopup() {
           >
             <strong style={{ fontFamily: fonts.display, fontWeight: 400, fontSize: '1.12em', color: colors.roseDark }}>
               הטבה בלעדית לסוגרות דרך האתר:
-            </strong>{' '}
+            </strong>
+            <br />
             <strong style={{ fontWeight: 800 }}>5% הנחה</strong> על כל הפקת קליפ אצל בוגרות הרשת!
           </p>
           <button

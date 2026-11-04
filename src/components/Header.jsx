@@ -1,21 +1,8 @@
 import { colors, fonts, layout, heroBackground } from '../theme'
-import { michal } from '../data/photographers'
 import useHover from '../hooks/useHover'
 import useTypewriter from '../hooks/useTypewriter'
 
 // אזור ה-Hero של מסך הבית - מתוך ה-<section> הראשון ב-design-template.html.
-
-const CONTACT_SUBJECT = encodeURIComponent('אשמח לפרטים ולהתאמת יוצרת')
-
-// פותח את מסך כתיבת המייל של Gmail בטאב חדש; אם החלון נחסם (פופאפ-בלוקר וכו')
-// נופלים חזרה ל-mailto: הרגיל של הדפדפן/המחשב.
-function openContactEmail() {
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${michal.email}&su=${CONTACT_SUBJECT}`
-  const win = window.open(gmailUrl, '_blank', 'noopener,noreferrer')
-  if (!win) {
-    window.location.href = `mailto:${michal.email}?subject=${CONTACT_SUBJECT}`
-  }
-}
 
 // משפט הסיום מוקלד אות-אות (בקשת הלקוחה: "משהו שזז ולא סטטי").
 const TAGLINE = 'כי גם לך מגיע הפקה מושלמת'
@@ -44,7 +31,7 @@ const enter = (name, delay, duration = 0.8) => ({
   animation: `${name} ${duration}s cubic-bezier(.2,.7,.2,1) ${delay}s both`,
 })
 
-export default function Header({ onGoGallery = () => {} }) {
+export default function Header({ onGoGallery = () => {}, onGoWorks = () => {} }) {
   const [ctaHover, ctaBind] = useHover()
   const [phoneHover, phoneBind] = useHover()
   const { count, done } = useTypewriter(TAGLINE, { startDelay: 1300, speed: 70 })
@@ -281,7 +268,7 @@ export default function Header({ onGoGallery = () => {} }) {
 
           <button
             {...phoneBind}
-            onClick={openContactEmail}
+            onClick={onGoWorks}
             style={{
               minHeight: 54,
               padding: '0 26px',

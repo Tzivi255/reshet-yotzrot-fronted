@@ -4,11 +4,13 @@ import { decoratePhotographer } from '../data/photographers'
 import { usePhotographers } from '../context/photographersStore'
 import PhotographerModal from '../components/PhotographerModal'
 import StatusMessage from '../components/StatusMessage'
+import usePageTitle from '../hooks/usePageTitle'
 
 // דף הניהול - מקביל ל-sc-if isAdmin שב-design-template.html.
 // כניסה מוגנת בסיסמה (דמו: כל סיסמה תעבוד), רשימת יוצרות מה-API עם הוספה / עריכה / מחיקה.
 
 export default function AdminPage() {
+  usePageTitle('ניהול')
   const {
     photographers,
     loading,

@@ -1,10 +1,12 @@
 import { colors, fonts } from '../theme'
 import { michal } from '../data/photographers'
+import usePageTitle from '../hooks/usePageTitle'
 
 // הצהרת נגישות - עמוד נדרש לפי תקנות שוויון זכויות לאנשים עם מוגבלות
 // (התאמות נגישות לשירות), תשע"ג-2013, ות"י 5568 (המבוסס על WCAG 2.0 ברמה AA).
 
 export default function AccessibilityPage() {
+  usePageTitle('הצהרת נגישות')
   return (
     <main style={{ maxWidth: 760, margin: '0 auto', padding: '40px 18px 96px' }}>
       <h1

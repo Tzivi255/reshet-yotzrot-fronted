@@ -7,6 +7,7 @@ import { colors, fonts, layout } from '../theme'
 const NAV_ITEMS = [
   { key: 'home', label: 'הבית', path: '/' },
   { key: 'gallery', label: 'גלריה', path: '/gallery' },
+  // { key: 'works', label: 'תצוגת עבודות', path: '/works' },
   // { key: 'admin', label: 'ניהול', path: '/admin' },
 ]
 
@@ -39,6 +40,7 @@ export default function Navbar() {
   const isActive = (key) => {
     if (key === 'home') return pathname === '/'
     if (key === 'gallery') return pathname.startsWith('/gallery') || pathname.startsWith('/photographer')
+    if (key === 'works') return pathname.startsWith('/works')
     if (key === 'admin') return pathname.startsWith('/admin')
     return false
   }

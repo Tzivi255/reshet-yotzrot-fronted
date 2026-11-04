@@ -6,9 +6,9 @@ import { EMPTY_PHOTOGRAPHER } from '../data/photographers'
 
 const FIELDS = [
   { label: 'שם', key: 'name', placeholder: 'שם מלא' },
-  { label: 'מה היא מצלמת', key: 'shootingCategory', placeholder: 'קליפים, חתונות, תדמית...' },
+  { label: 'מה היא מצלמת', key: 'shootingCategory', placeholder: 'קליפ בת מצווה, משפחתי, חלאקה, אירועים...' },
   { label: 'סגנון', key: 'style', placeholder: 'קינמטי / נקי / צבעוני' },
-  { label: 'מיקום', key: 'location', placeholder: 'אזור או יישוב' },
+  { label: 'מיקום', key: 'location', placeholder: 'עיר מגורים - אזורים נוספים (למשל: אלעד - ירושלים והסביבה)' },
   { label: 'מחיר מבוקש', key: 'price', placeholder: '1500' },
   { label: 'טלפון', key: 'phone', placeholder: '052-0000000' },
   { label: 'מייל', key: 'email', placeholder: 'name@example.com' },
