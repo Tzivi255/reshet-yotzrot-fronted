@@ -5,12 +5,18 @@ import { priceBands, inPriceBand } from '../data/photographers'
 import { usePhotographers } from '../context/photographersStore'
 import PhotographerCard from '../components/PhotographerCard'
 import StatusMessage from '../components/StatusMessage'
+import useMediaQuery from '../hooks/useMediaQuery'
+import {
+  REGIONS,
+  CATEGORIES,
+  ALL_REGIONS,
+  ALL_CATEGORIES,
+  regionsOf,
+  categoriesOf,
+} from '../data/filters'
 
 // מסך הגלריה - מקביל ל-sc-if isGallery שב-design-template.html.
 // הנתונים נטענים מה-API (דרך ה-Context), כולל מצבי טעינה ושגיאה.
-
-const ALL_AREAS = 'כל האזורים'
-const ALL_CATS = 'כל הסגנונות'
 
 const selectStyle = {
   minHeight: 48,
@@ -39,14 +45,26 @@ function shuffleWithSeed(items, seed) {
   return out
 }
 
+// גרסה מוקטנת לנייד (גודל גופן 16 כדי שאייפון לא יעשה זום בלחיצה)
+const selectStyleMobile = {
+  ...selectStyle,
+  minHeight: 40,
+  borderRadius: 12,
+  padding: '0 8px',
+  width: '100%',
+  minWidth: 0,
+}
+
 const labelSpan = { fontSize: 13, fontWeight: 700, color: colors.muted }
 
 export default function GalleryPage() {
   const navigate = useNavigate()
   const { photographers, loading, error, reload } = usePhotographers()
 
-  const [area, setArea] = useState(ALL_AREAS)
-  const [cat, setCat] = useState(ALL_CATS)
+  const isMobile = useMediaQuery('(max-width: 640px)')
+
+  const [area, setArea] = useState(ALL_REGIONS)
+  const [cat, setCat] = useState(ALL_CATEGORIES)
   const [band, setBand] = useState('all')
 
   // סדר אקראי בכל כניסה לגלריה, כדי שלא תמיד אותה יוצרת תופיע ראשונה.
@@ -54,28 +72,43 @@ export default function GalleryPage() {
   const [seed] = useState(() => Math.floor(Math.random() * 2 ** 31))
   const shuffled = useMemo(() => shuffleWithSeed(photographers, seed), [photographers, seed])
 
-  const areas = useMemo(
-    () => [ALL_AREAS, ...new Set(photographers.map((p) => p.location).filter(Boolean))],
-    [photographers],
+  // כל יוצרת משויכת לאזורים ולקטגוריות לפי הטקסט החופשי שכתבה (ראו data/filters.js).
+  const tagged = useMemo(
+    () =>
+      shuffled.map((p) => ({
+        p,
+        regions: regionsOf(p.location),
+        cats: categoriesOf(p),
+      })),
+    [shuffled],
   )
-  const cats = useMemo(
-    () => [ALL_CATS, ...new Set(photographers.map((p) => p.shootingCategory).filter(Boolean))],
-    [photographers],
-  )
+
+  // מספר היוצרות בכל אזור / קטגוריה - מוצג ליד כל אפשרות בסינון.
+  const counts = useMemo(() => {
+    const c = {}
+    for (const t of tagged) {
+      for (const k of [...t.regions.map((r) => 'r:' + r), ...t.cats.map((x) => 'c:' + x)]) {
+        c[k] = (c[k] || 0) + 1
+      }
+    }
+    return c
+  }, [tagged])
 
   const list = useMemo(() => {
     const b = priceBands.find((x) => x.key === band) || priceBands[0]
-    return shuffled.filter(
-      (p) =>
-        (area === ALL_AREAS || p.location === area) &&
-        (cat === ALL_CATS || p.shootingCategory === cat) &&
-        inPriceBand(p.price, b),
-    )
-  }, [shuffled, area, cat, band])
+    return tagged
+      .filter(
+        (t) =>
+          (area === ALL_REGIONS || t.regions.includes(area)) &&
+          (cat === ALL_CATEGORIES || t.cats.includes(cat)) &&
+          inPriceBand(t.p.price, b),
+      )
+      .map((t) => t.p)
+  }, [tagged, area, cat, band])
 
   const clearFilters = () => {
-    setArea(ALL_AREAS)
-    setCat(ALL_CATS)
+    setArea(ALL_REGIONS)
+    setCat(ALL_CATEGORIES)
     setBand('all')
   }
 
@@ -106,6 +139,7 @@ export default function GalleryPage() {
 
       {!loading && !error && (
         <>
+          {/* בנייד הסינון מצומצם (שורת בחירה אחת + שורת מחירים נגללת) כדי שיראו כמה יוצרות במסך */}
           <div
             style={{
               position: 'sticky',
@@ -113,43 +147,77 @@ export default function GalleryPage() {
               zIndex: 30,
               background: '#fff',
               border: `1px solid ${colors.cardBorderSoft}`,
-              borderRadius: 22,
-              padding: 14,
+              borderRadius: isMobile ? 16 : 22,
+              padding: isMobile ? 8 : 14,
               boxShadow: '0 10px 26px rgba(90,62,71,.07)',
-              marginBottom: 22,
+              marginBottom: isMobile ? 14 : 22,
             }}
           >
             <div
               style={{
                 display: 'grid',
-                gap: 12,
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: isMobile ? 8 : 12,
+                gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
               }}
             >
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={labelSpan}>אזור / יישוב</span>
-                <select value={area} onChange={(e) => setArea(e.target.value)} style={selectStyle}>
-                  {areas.map((a) => (
-                    <option key={a} value={a}>
-                      {a}
+              <label style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
+                {!isMobile && <span style={labelSpan}>אזור</span>}
+                <select
+                  aria-label="אזור"
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                  style={isMobile ? selectStyleMobile : selectStyle}
+                >
+                  {REGIONS.map((r) => (
+                    <option key={r.key} value={r.key}>
+                      {r.label}
+                      {r.key !== ALL_REGIONS ? ` (${counts['r:' + r.key] || 0})` : ''}
                     </option>
                   ))}
                 </select>
               </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={labelSpan}>מה מצלמים</span>
-                <select value={cat} onChange={(e) => setCat(e.target.value)} style={selectStyle}>
-                  {cats.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
+              <label style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
+                {!isMobile && <span style={labelSpan}>מה מצלמים</span>}
+                <select
+                  aria-label="מה מצלמים"
+                  value={cat}
+                  onChange={(e) => setCat(e.target.value)}
+                  style={isMobile ? selectStyleMobile : selectStyle}
+                >
+                  {CATEGORIES.map((c) => (
+                    <option key={c.key} value={c.key}>
+                      {c.label}
+                      {c.key !== ALL_CATEGORIES ? ` (${counts['c:' + c.key] || 0})` : ''}
                     </option>
                   ))}
                 </select>
               </label>
             </div>
-            <div style={{ marginTop: 12 }}>
-              <span style={{ ...labelSpan, display: 'block', marginBottom: 8 }}>טווח מחירים</span>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            <div
+              style={
+                isMobile
+                  ? { marginTop: 8, display: 'flex', alignItems: 'center', gap: 6 }
+                  : { marginTop: 12 }
+              }
+            >
+              <span
+                style={
+                  isMobile
+                    ? { ...labelSpan, fontSize: 12.5, flexShrink: 0 }
+                    : { ...labelSpan, display: 'block', marginBottom: 8 }
+                }
+              >
+                {isMobile ? 'מחיר:' : 'טווח מחירים'}
+              </span>
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: isMobile ? 'nowrap' : 'wrap',
+                  overflowX: isMobile ? 'auto' : 'visible',
+                  scrollbarWidth: 'none',
+                  gap: isMobile ? 6 : 8,
+                }}
+              >
                 {priceBands.map((b) => {
                   const on = band === b.key
                   return (
@@ -157,11 +225,13 @@ export default function GalleryPage() {
                       key={b.key}
                       onClick={() => setBand(b.key)}
                       style={{
-                        minHeight: 44,
-                        padding: '0 16px',
+                        minHeight: isMobile ? 34 : 44,
+                        padding: isMobile ? '0 12px' : '0 16px',
                         borderRadius: 999,
-                        fontSize: 15,
+                        fontSize: isMobile ? 13.5 : 15,
                         fontWeight: 600,
+                        whiteSpace: 'nowrap',
+                        flexShrink: 0,
                         border: `1px solid ${on ? colors.rose : colors.pinkBorder}`,
                         background: on ? colors.rose : colors.bg,
                         color: on ? '#fff' : colors.muted,
@@ -190,7 +260,7 @@ export default function GalleryPage() {
           <div
             style={{
               display: 'grid',
-              gap: 16,
+              gap: isMobile ? 12 : 16,
               gridTemplateColumns: 'repeat(auto-fill, minmax(258px, 1fr))',
             }}
           >

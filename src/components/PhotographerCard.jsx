@@ -1,11 +1,15 @@
 import { colors, fonts } from '../theme'
 import { formatPrice } from '../data/photographers'
 import useHover from '../hooks/useHover'
+import useMediaQuery from '../hooks/useMediaQuery'
 
 // כרטיס יוצרת בגלריה - מתוך ה-<article> שבמסך הגלריה ב-design-template.html.
 
 export default function PhotographerCard({ photographer, onOpen = () => {} }) {
   const [btnHover, btnBind] = useHover()
+  // בנייד הכרטיס נמוך יותר, כדי שיראו לפחות שתי יוצרות במסך בזמן גלילה
+  const compact = useMediaQuery('(max-width: 640px)')
+  const logoSize = compact ? 54 : 74
 
   const { name, shootingCategory, location, price, logoUrl } = photographer
   const initial = (name || '?').trim().charAt(0)
@@ -26,8 +30,8 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
       <div
         style={{
           // גובה + ריפוד עליון: מפנים מקום לתגית ההנחה כדי שלא תסתיר את הלוגו
-          height: 152,
-          paddingTop: 30,
+          height: compact ? 100 : 152,
+          paddingTop: compact ? 26 : 30,
           background: 'linear-gradient(135deg, #FBDCE3, #F8C9D5)',
           display: 'flex',
           alignItems: 'center',
@@ -40,8 +44,8 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
             src={logoUrl}
             alt={`לוגו ${name}`}
             style={{
-              width: 74,
-              height: 74,
+              width: logoSize,
+              height: logoSize,
               borderRadius: '50%',
               objectFit: 'cover',
               background: '#fff',
@@ -51,15 +55,15 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
         ) : (
           <div
             style={{
-              width: 74,
-              height: 74,
+              width: logoSize,
+              height: logoSize,
               borderRadius: '50%',
               background: '#fff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontFamily: fonts.display,
-              fontSize: 26,
+              fontSize: compact ? 21 : 26,
               color: colors.rose,
               boxShadow: '0 6px 16px rgba(148,36,63,.16)',
             }}
@@ -71,17 +75,17 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
         <span
           style={{
             position: 'absolute',
-            top: 12,
-            insetInlineStart: 12,
+            top: compact ? 8 : 12,
+            insetInlineStart: compact ? 8 : 12,
             display: 'inline-flex',
             alignItems: 'center',
             gap: 5,
-            padding: '5px 10px',
+            padding: compact ? '3px 8px' : '5px 10px',
             borderRadius: 8,
             // אותו צהוב-קרם של תגית המחיר וחלונית ההטבה
             background: colors.chipAmberBg,
             color: colors.chipAmberText,
-            fontSize: 12.5,
+            fontSize: compact ? 11.5 : 12.5,
             fontWeight: 700,
             lineHeight: 1.2,
             boxShadow: '0 4px 12px rgba(138,84,16,.16)',
@@ -111,14 +115,14 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
 
       <div
         style={{
-          padding: 18,
+          padding: compact ? 14 : 18,
           display: 'flex',
           flexDirection: 'column',
-          gap: 8,
+          gap: compact ? 6 : 8,
           flex: 1,
         }}
       >
-        <h3 style={{ margin: 0, fontFamily: fonts.display, fontWeight: 400, fontSize: 21 }}>
+        <h3 style={{ margin: 0, fontFamily: fonts.display, fontWeight: 400, fontSize: compact ? 19 : 21 }}>
           {name}
         </h3>
         <p style={{ margin: 0, fontSize: 15.5, color: colors.rose, fontWeight: 600 }}>
@@ -155,7 +159,7 @@ export default function PhotographerCard({ photographer, onOpen = () => {} }) {
           onClick={() => onOpen(photographer)}
           style={{
             marginTop: 'auto',
-            minHeight: 48,
+            minHeight: compact ? 42 : 48,
             border: 0,
             borderRadius: 14,
             background: btnHover ? colors.rose : colors.deep,
