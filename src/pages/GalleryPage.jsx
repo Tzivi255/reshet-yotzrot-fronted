@@ -5,6 +5,7 @@ import { priceBands, inPriceBand } from '../data/photographers'
 import { usePhotographers } from '../context/photographersStore'
 import PhotographerCard from '../components/PhotographerCard'
 import StatusMessage from '../components/StatusMessage'
+import usePageTitle from '../hooks/usePageTitle'
 import useMediaQuery from '../hooks/useMediaQuery'
 import {
   REGIONS,
@@ -58,6 +59,7 @@ const selectStyleMobile = {
 const labelSpan = { fontSize: 13, fontWeight: 700, color: colors.muted }
 
 export default function GalleryPage() {
+  usePageTitle('גלריית היוצרות')
   const navigate = useNavigate()
   const { photographers, loading, error, reload } = usePhotographers()
 

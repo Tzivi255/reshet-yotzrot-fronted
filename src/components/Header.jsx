@@ -1,4 +1,4 @@
-import { colors, fonts, layout, heroBackground, heroCameraImage } from '../theme'
+import { colors, fonts, layout, heroBackground } from '../theme'
 import useHover from '../hooks/useHover'
 import useTypewriter from '../hooks/useTypewriter'
 
@@ -59,33 +59,12 @@ export default function Header({ onGoGallery = () => {}, onGoWorks = () => {} })
           inset: 0,
           backgroundImage: heroBackground,
           backgroundSize: 'cover',
+          backgroundPosition: '62% top',
           backgroundRepeat: 'no-repeat',
-          transformOrigin: '30% 40%',
+          transformOrigin: '60% 30%',
           animation: 'heroZoom 22s ease-in-out infinite alternate',
         }}
-      >
-        {/* המצלמה - בצד שמאל, בשקיפות, ונמוגה בעדינות לכיוון הטקסט ולתחתית */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 70,
-            left: 0,
-            width: 'clamp(320px, 52%, 760px)',
-            backgroundImage: heroCameraImage,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            opacity: 0.55,
-            WebkitMaskImage:
-              'linear-gradient(to right, #000 55%, transparent), linear-gradient(to top, transparent, #000 30%)',
-            WebkitMaskComposite: 'source-in',
-            maskImage:
-              'linear-gradient(to right, #000 55%, transparent), linear-gradient(to top, transparent, #000 30%)',
-            maskComposite: 'intersect',
-          }}
-        />
-      </div>
+      />
 
       {/* נקודות אור מרחפות */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>

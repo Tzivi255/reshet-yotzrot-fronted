@@ -4,6 +4,7 @@ import { colors, fonts } from '../theme'
 import { decoratePhotographer } from '../data/photographers'
 import { getPhotographer } from '../api/photographers'
 import StatusMessage from '../components/StatusMessage'
+import usePageTitle from '../hooks/usePageTitle'
 
 // עמוד פרופיל מפורט ליוצרת בודדת - מקביל ל-sc-if isProfile שב-design-template.html.
 // היוצרת נטענת ישירות מה-API לפי ה-id שב-URL, עם מצבי טעינה / שגיאה / לא-נמצא.
@@ -28,6 +29,7 @@ function ProfileView({ id }) {
   const [error, setError] = useState(null)
   const [notFound, setNotFound] = useState(false)
   const [attempt, setAttempt] = useState(0)
+  usePageTitle(data?.name || 'פרופיל יוצרת')
 
   // עדכוני ה-state קורים רק בתוך ה-callbacks האסינכרוניים של ה-fetch.
   useEffect(() => {

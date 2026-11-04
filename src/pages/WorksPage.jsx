@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { colors, fonts, layout } from '../theme'
 import { getWorks, driveThumb, drivePreview } from '../api/works'
 import StatusMessage from '../components/StatusMessage'
+import usePageTitle from '../hooks/usePageTitle'
 import useHover from '../hooks/useHover'
 
 // עמוד "תצוגת עבודות": סרטון מייצג אחד מכל יוצרת, מתוך תיקיית ה-Drive שלה.
@@ -169,6 +170,7 @@ function ClipCard({ work, onOpenProfile }) {
 }
 
 export default function WorksPage() {
+  usePageTitle('תצוגת עבודות')
   const navigate = useNavigate()
   const [works, setWorks] = useState([])
   const [loading, setLoading] = useState(true)
