@@ -8,6 +8,7 @@ import AccessibilityWidget from './components/AccessibilityWidget'
 import DiscountPopup from './components/DiscountPopup'
 import HomePage from './pages/HomePage'
 import GalleryPage from './pages/GalleryPage'
+import WorksPage from './pages/WorksPage'
 import ProfilePage from './pages/ProfilePage'
 import AdminPage from './pages/AdminPage'
 import AccessibilityPage from './pages/AccessibilityPage'
@@ -39,6 +40,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/works" element={<WorksPage />} />
               <Route path="/photographer/:id" element={<ProfilePage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/accessibility" element={<AccessibilityPage />} />

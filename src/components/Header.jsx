@@ -1,21 +1,8 @@
-import { colors, fonts, layout, heroBackground } from '../theme'
-import { michal } from '../data/photographers'
+import { colors, fonts, layout, heroBackground, heroCameraImage } from '../theme'
 import useHover from '../hooks/useHover'
 import useTypewriter from '../hooks/useTypewriter'
 
 // אזור ה-Hero של מסך הבית - מתוך ה-<section> הראשון ב-design-template.html.
-
-const CONTACT_SUBJECT = encodeURIComponent('אשמח לפרטים ולהתאמת יוצרת')
-
-// פותח את מסך כתיבת המייל של Gmail בטאב חדש; אם החלון נחסם (פופאפ-בלוקר וכו')
-// נופלים חזרה ל-mailto: הרגיל של הדפדפן/המחשב.
-function openContactEmail() {
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${michal.email}&su=${CONTACT_SUBJECT}`
-  const win = window.open(gmailUrl, '_blank', 'noopener,noreferrer')
-  if (!win) {
-    window.location.href = `mailto:${michal.email}?subject=${CONTACT_SUBJECT}`
-  }
-}
 
 // משפט הסיום מוקלד אות-אות (בקשת הלקוחה: "משהו שזז ולא סטטי").
 const TAGLINE = 'כי גם לך מגיע הפקה מושלמת'
@@ -44,7 +31,7 @@ const enter = (name, delay, duration = 0.8) => ({
   animation: `${name} ${duration}s cubic-bezier(.2,.7,.2,1) ${delay}s both`,
 })
 
-export default function Header({ onGoGallery = () => {} }) {
+export default function Header({ onGoGallery = () => {}, onGoWorks = () => {} }) {
   const [ctaHover, ctaBind] = useHover()
   const [phoneHover, phoneBind] = useHover()
   const { count, done } = useTypewriter(TAGLINE, { startDelay: 1300, speed: 70 })
@@ -72,12 +59,33 @@ export default function Header({ onGoGallery = () => {} }) {
           inset: 0,
           backgroundImage: heroBackground,
           backgroundSize: 'cover',
-          backgroundPosition: '62% top',
           backgroundRepeat: 'no-repeat',
-          transformOrigin: '60% 30%',
+          transformOrigin: '30% 40%',
           animation: 'heroZoom 22s ease-in-out infinite alternate',
         }}
-      />
+      >
+        {/* המצלמה - בצד שמאל, בשקיפות, ונמוגה בעדינות לכיוון הטקסט ולתחתית */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 70,
+            left: 0,
+            width: 'clamp(320px, 52%, 760px)',
+            backgroundImage: heroCameraImage,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.55,
+            WebkitMaskImage:
+              'linear-gradient(to right, #000 55%, transparent), linear-gradient(to top, transparent, #000 30%)',
+            WebkitMaskComposite: 'source-in',
+            maskImage:
+              'linear-gradient(to right, #000 55%, transparent), linear-gradient(to top, transparent, #000 30%)',
+            maskComposite: 'intersect',
+          }}
+        />
+      </div>
 
       {/* נקודות אור מרחפות */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
@@ -281,7 +289,7 @@ export default function Header({ onGoGallery = () => {} }) {
 
           <button
             {...phoneBind}
-            onClick={openContactEmail}
+            onClick={onGoWorks}
             style={{
               minHeight: 54,
               padding: '0 26px',

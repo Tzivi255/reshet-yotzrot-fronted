@@ -10,7 +10,7 @@ export default function HomePage() {
 
   return (
     <main>
-      <Header onGoGallery={() => navigate('/gallery')} />
+      <Header onGoGallery={() => navigate('/gallery')} onGoWorks={() => navigate('/works')} />
       <HowItWorks />
       <AboutMichal />
     </main>
