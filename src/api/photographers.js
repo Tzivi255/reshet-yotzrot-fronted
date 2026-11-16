@@ -1,4 +1,5 @@
 import { request } from './client'
+import { adminHeaders } from './adminAuth'
 
 // שירות התקשורת ליוצרות מול ה-API (route: /api/profile).
 // כאן גם ממופה המבנה של מודל ה-Mongo (Profile) למודל שה-UI עובד איתו.
@@ -63,6 +64,7 @@ export function getPhotographer(id) {
 export function createPhotographer(model) {
   return request(RESOURCE, {
     method: 'POST',
+    headers: adminHeaders(),
     body: toFormData(model),
   }).then(fromApi)
 }
@@ -70,10 +72,14 @@ export function createPhotographer(model) {
 export function updatePhotographer(id, model) {
   return request(`${RESOURCE}/${id}`, {
     method: 'PUT',
+    headers: adminHeaders(),
     body: toFormData(model),
   }).then(fromApi)
 }
 
 export function deletePhotographer(id) {
-  return request(`${RESOURCE}/${id}`, { method: 'DELETE' })
+  return request(`${RESOURCE}/${id}`, {
+    method: 'DELETE',
+    headers: adminHeaders(),
+  })
 }

@@ -5,9 +5,10 @@ import { usePhotographers } from '../context/photographersStore'
 import PhotographerModal from '../components/PhotographerModal'
 import StatusMessage from '../components/StatusMessage'
 import usePageTitle from '../hooks/usePageTitle'
+import { adminLogin, clearAdminToken, getAdminToken } from '../api/adminAuth'
 
 // דף הניהול - מקביל ל-sc-if isAdmin שב-design-template.html.
-// כניסה מוגנת בסיסמה (דמו: כל סיסמה תעבוד), רשימת יוצרות מה-API עם הוספה / עריכה / מחיקה.
+// כניסה מוגנת בסיסמה (מאומתת מול השרת, POST /api/admin/login), רשימת יוצרות מה-API עם הוספה / עריכה / מחיקה.
 
 export default function AdminPage() {
   usePageTitle('ניהול')
@@ -21,16 +22,52 @@ export default function AdminPage() {
     removePhotographer,
   } = usePhotographers()
 
-  const [locked, setLocked] = useState(true)
+  const [locked, setLocked] = useState(() => !getAdminToken())
   const [pass, setPass] = useState('')
+  const [loginBusy, setLoginBusy] = useState(false)
+  const [loginError, setLoginError] = useState(null)
   const [modal, setModal] = useState(null) // null | { editId, initial }
   const [busy, setBusy] = useState(false)
   const [actionError, setActionError] = useState(null)
 
+  // טוקן חסר / פג תוקף - חוזרים למסך הכניסה
+  const handleAuthError = (err) => {
+    if (err?.status === 401) {
+      clearAdminToken()
+      setModal(null)
+      setLocked(true)
+      setLoginError('פג תוקף ההתחברות. יש להתחבר מחדש.')
+      return true
+    }
+    return false
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    if (!pass || loginBusy) return
+    setLoginBusy(true)
+    setLoginError(null)
+    try {
+      await adminLogin(pass)
+      setPass('')
+      setLocked(false)
+    } catch (err) {
+      setLoginError(err.message || 'ההתחברות נכשלה')
+    } finally {
+      setLoginBusy(false)
+    }
+  }
+
+  const handleLogout = () => {
+    clearAdminToken()
+    setLocked(true)
+  }
+
   if (locked) {
     return (
       <main style={{ maxWidth: layout.maxWidth, margin: '0 auto', padding: '26px 18px 80px' }}>
-        <div
+        <form
+          onSubmit={handleLogin}
           style={{
             maxWidth: 380,
             margin: '8vh auto',
@@ -52,6 +89,9 @@ export default function AdminPage() {
             value={pass}
             onChange={(e) => setPass(e.target.value)}
             placeholder="סיסמה"
+            aria-label="סיסמה"
+            autoComplete="current-password"
+            autoFocus
             style={{
               width: '100%',
               minHeight: 50,
@@ -63,8 +103,14 @@ export default function AdminPage() {
               marginBottom: 10,
             }}
           />
+          {loginError && (
+            <p role="alert" style={{ margin: '0 0 10px', fontSize: 14.5, fontWeight: 600, color: colors.roseDark }}>
+              {loginError}
+            </p>
+          )}
           <button
-            onClick={() => setLocked(false)}
+            type="submit"
+            disabled={loginBusy || !pass}
             style={{
               width: '100%',
               minHeight: 52,
@@ -74,14 +120,12 @@ export default function AdminPage() {
               color: '#fff',
               fontSize: 17,
               fontWeight: 700,
+              opacity: loginBusy || !pass ? 0.7 : 1,
             }}
           >
-            כניסה
+            {loginBusy ? 'מתחבר...' : 'כניסה'}
           </button>
-          <p style={{ margin: '12px 0 0', fontFamily: fonts.mono, fontSize: 11, color: '#B08C96' }}>
-            DEMO: כל סיסמה תעבוד
-          </p>
-        </div>
+        </form>
       </main>
     )
   }
@@ -97,6 +141,7 @@ export default function AdminPage() {
       }
       setModal(null)
     } catch (err) {
+      if (handleAuthError(err)) return
       setActionError(err.message || 'שמירת היוצרת נכשלה')
     } finally {
       setBusy(false)
@@ -109,6 +154,7 @@ export default function AdminPage() {
     try {
       await removePhotographer(id)
     } catch (err) {
+      if (handleAuthError(err)) return
       setActionError(err.message || 'מחיקת היוצרת נכשלה')
     }
   }
@@ -140,6 +186,22 @@ export default function AdminPage() {
             {loading ? 'טוען...' : `${photographers.length} יוצרות ברשת`}
           </p>
         </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+        <button
+          onClick={handleLogout}
+          style={{
+            minHeight: 50,
+            padding: '0 18px',
+            borderRadius: 16,
+            border: `1px solid ${colors.cardBorder}`,
+            background: '#fff',
+            color: colors.muted,
+            fontSize: 15.5,
+            fontWeight: 600,
+          }}
+        >
+          יציאה
+        </button>
         <button
           onClick={() => setModal({ editId: null, initial: null })}
           style={{
@@ -155,6 +217,7 @@ export default function AdminPage() {
         >
           + הוספת יוצרת
         </button>
+        </div>
       </div>
 
       {actionError && (
